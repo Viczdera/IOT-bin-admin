@@ -22,11 +22,11 @@ function DoughnutChart(props: any) {
     },
     {
       label: "Dispatched",
-      value: 4,
+      value: 8,
     },
     {
       label: "Returned",
-      value: 10,
+      value: 6,
     },
   ];
 
@@ -87,25 +87,27 @@ function DoughnutChart(props: any) {
       </g>
     );
   };
-  const COLORSThree = [
-    "#007AFF",
+  const COLORS = [
+    "#3975cf",
     "#EC4C47",
-    "#0E3EC6",
-    '#FAC478',
-    '#5DB18C',
-    '#17E0BC',
-    '#B065F6',
-    '#EC4C47',
-    '#0F0491',
-    '#1665D8',
-    '#FFBE9D',
-    '#2B7DC0',
+    "#FAC478",
+    // '#B065F6',
+    // '#EC4C47',
+    // '#0F0491',
+    // '#1665D8',
+    // '#FFBE9D',
+    // '#2B7DC0',
+    // "#0E3EC6",
+    //  '#5DB18C',
+    // '#17E0BC',
   ];
   const [activeIndex, setActiveIndex] = React.useState(0);
 
   const onPieEnter = (_: any, index: React.SetStateAction<number>) => {
     setActiveIndex(index);
   };
+
+  const RADIAN = Math.PI / 180;
 
   useEffect(() => {
     setLoaded(true);
@@ -137,20 +139,22 @@ function DoughnutChart(props: any) {
                 height={isLargerThan1000 ? 250 : 200}
               >
                 <Pie
-                  activeIndex={activeIndex}
-                  activeShape={renderActiveShape}
                   data={chartData}
                   cx="50%"
                   cy="50%"
+                  activeShape={renderActiveShape}
                   innerRadius={65}
                   outerRadius={90}
-                  fill="#16161d"
                   dataKey="value"
+                  labelLine={false}
+                  activeIndex={activeIndex}
                   onMouseEnter={onPieEnter}
-                />
-                {chartData.map((entry, index) => (
-                  <Cell fill={COLORSThree[index % COLORSThree.length]} key={index} />
-                ))}
+                  fill="#8884d8"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell fill={COLORS[index % COLORS.length]} key={index} />
+                  ))}
+                </Pie>
               </PieChart>
             ) : (
               ""
@@ -165,7 +169,7 @@ function DoughnutChart(props: any) {
                   w="15px"
                   h="15px"
                   borderRadius="5px"
-                  backgroundColor={COLORSThree[i]}
+                  backgroundColor={COLORS[i]}
                 ></Box>
                 <Text ml="5px">{m.label}</Text>
               </Flex>

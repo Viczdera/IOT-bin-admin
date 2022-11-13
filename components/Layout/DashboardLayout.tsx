@@ -24,11 +24,11 @@ function DashLayout(props: LayoutProps) {
   const btnRef = React.useRef();
 
   return (
-    <Flex minW={{base:"0px",sm:"800px"}} w="100%" justifyContent="center">
-      <Flex>
+    <Flex minW={{ base: "0px", sm: "800px" }} w="100%" justifyContent="center">
+      <Flex display={{ base: "block", sm: "none" }}>
         <Nav />
       </Flex>
-      <Flex w="100%"  >
+      <Flex w="100%">
         <SideNav />
 
         <Flex

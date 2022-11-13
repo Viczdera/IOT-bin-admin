@@ -40,7 +40,7 @@ const CardCont = (props: {
           </Box>
         ) : (
           <Box style={styles.circle}>
-            <Icon as={props.icon} color="#000" />
+            <Icon as={props.icon} color="#fff" />
           </Box>
         )}
 
@@ -122,10 +122,11 @@ function DataCards(props: any) {
 
 const styles = {
   card: {
-    background: "var(--black100)",
-    color: "#fff",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    border:' 1px solid #E5EBF0',
+    color: "var(--black100)",
+
     borderRadius: "10px",
+    
     padding: "20px",
     margin: "10px",
     height: "88px",
@@ -135,7 +136,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "#fff",
+    background: "var(--blue100)",
     width: " 42px",
     height: " 42px",
     borderRadius: "50%",

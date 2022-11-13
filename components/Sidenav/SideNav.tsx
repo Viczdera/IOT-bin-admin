@@ -58,11 +58,10 @@ function SideNav() {
       top={0}
       left="0px"
       pos="sticky"
-      zIndex={500}
+      zIndex={1000}
       minH="100vh"
       h="100vh"
-      backgroundColor="white.100"
-      boxShadow={boxShadow3}
+    //  / boxShadow={boxShadow3}
     >
       <Flex
         display={{ base: "none", sm: "flex" }}
@@ -76,7 +75,7 @@ function SideNav() {
             padding: "10px 0px",
             width: 170,
             justifyContent: "space-between",
-            backgroundColor: "white",
+            backgroundColor: "var(--grey300)",
           }}
           animate={{
             width: sideNavSize == "large" ? 180 : 90,

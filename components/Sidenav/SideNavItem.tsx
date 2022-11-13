@@ -23,11 +23,14 @@ const SideNavItem = (props: navProps) => {
       mt={5}
       flexDir="column"
       fontFamily="Raleway"
+      
       w="100%"
       alignItems={props.sideNavSize == "small" ? "center" : "flex-start"}
-      backgroundColor={isActive ? "black.100" : "white.100"}
+      backgroundColor={isActive ? "#fff" : "grey.300"}
+      borderTop={isActive?'1px solid  #E5EBF0':'none'}
+      borderBottom={isActive?'1px solid  #E5EBF0':'none'}
     _hover={{backgroundColor:`${!isActive && "grey.200"}`}}
-      color={isActive ? "white" : "black.100"}
+      color={isActive ? "black.100" : "#535b63"}
       
       pl={props.sideNavSize == "large" ? "5" : ""}
       cursor='pointer'
@@ -47,7 +50,7 @@ const SideNavItem = (props: navProps) => {
               as={props.icon}
               mr={props.sideNavSize == "small" ? "0" : "5px"}
             />
-            {props.sideNavSize == "small" ? "" : <Text>{props.title}</Text>}
+            {props.sideNavSize == "small" ? "" : <Text fontWeight='700'>{props.title}</Text>}
           </Flex>
         </MenuButton>
       </Link>

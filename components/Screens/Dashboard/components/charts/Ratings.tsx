@@ -50,7 +50,7 @@ const Ratings = (props: any) => {
         mb="8px"
         overflowX="hidden"
         // backgroundColor={props.color}
-        backgroundColor="grey.100"
+        backgroundColor="grey.300"
       >
         {" "}
         <motion.div
@@ -60,7 +60,7 @@ const Ratings = (props: any) => {
             borderTopRightRadius: "6px",
             borderBottomRightRadius: "6px",
             // backgroundColor:{props.color}
-            backgroundColor: "var(--black100)",
+            backgroundColor: "var(--blue100)",
           }}
           animate={{
             width: load && props.width,

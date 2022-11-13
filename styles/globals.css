@@ -3,7 +3,9 @@
    --black200: #1d1c1c;
    --grey100:#00000097;
    --grey200:#c3c2c213;
- 
+   --blue100: #23406b;
+   --grey300:#f7f9fb;
+   --grey400:#fcfdff;
  }
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap'); */
 
@@ -113,7 +115,7 @@ a {
 }
 .chakra-ui-light{
   height: max-content !important;
-  background: var(--grey200) !important;
+  background:#fff !important;
 
 }
 #nprogress .spinner {

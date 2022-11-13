@@ -7,26 +7,30 @@ const appTheme = extendTheme({
       200: "#1d1c1c",
     },
     grey: {
-      100:"#00000097",
+      100: "#00000097",
       200: "#c3c2c213",
-      300:'#D5D5D5'
+      300: "#f7f8fb",
+      400: "#fcfdff",
+      500: "#D5D5D5",
     },
     white: {
       100: "#fff",
       200: "#F2F2F2",
       300: "#f2f3f3",
     },
-    green:{
-      100:'#03ab92'
+    green: {
+      100: "#03ab92",
     },
-   red:{
-      100:'#f24f62'
-    }
+    red: {
+      100: "#f24f62",
+    },
+    blue: {
+      100: "#3975cf",
+    },
   },
   fonts: {
     heading: "Segoe UI, sans-serif",
     body: "Inter, sans-serif",
-    
   },
   fontWeights: {
     hairline: 100,

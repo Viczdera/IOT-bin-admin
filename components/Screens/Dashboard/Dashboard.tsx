@@ -31,7 +31,8 @@ function Dashboard() {
 const styles = {
   boxCont: {
     padding: "10px",
-    boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+    //boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+    boxShadow: 'rgba(83, 87, 94, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
     borderRadius: "20px",
     background: "#fff",
   },

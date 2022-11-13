@@ -77,7 +77,7 @@ function MobileNav(props: mobileProps) {
             </Box>
           </DrawerBody>
           <Container fontFamily="Raleway">
-            <Flex flexDir="column" w="100%" alignItems="flex-start" as="nav">
+            <Flex my='100px' flexDir="column" w="100%" alignItems="flex-start" as="nav">
               <Menu placement="right">
                 <SideNavItem
                   title="Dashboard"
@@ -92,19 +92,9 @@ function MobileNav(props: mobileProps) {
                   sideNavSize="large"
                   href="/products"
                 />
-                <SideNavItem
-                  title="Orders"
-                  icon={BsDisplayFill}
-                  sideNavSize="large"
-                  href="/orders"
-                />
-                <SideNavItem
-                  title="Inventory"
-                  icon={MdOutlineInventory2}
-                  sideNavSize="large"
-                  href="/inventory"
-                />
-                <Divider my="30px" />
+               
+               
+                <Divider my="60px" />
                 <Button
                   margin="0 auto"
                   backgroundColor="white.100"
@@ -122,6 +112,7 @@ function MobileNav(props: mobileProps) {
               </Menu>
             </Flex>
             <Flex
+          
               p="5%"
               flexDir="column"
               w="100%"

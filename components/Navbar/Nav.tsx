@@ -76,7 +76,7 @@ const Nav = () => {
       px="20px"
       top="0"
       left="0"
-      zIndex={1000}
+      zIndex={500}
       backgroundColor="white.100"
       boxShadow=" rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;"
     >
