@@ -1,9 +1,102 @@
-html,
+:root{
+  --black100: #161616;
+   --black200: #1d1c1c;
+   --grey100:#00000097;
+   --grey200:#c3c2c213;
+ 
+ }
+/* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap'); */
+
+@font-face {
+  font-family: Segoe UI;
+  src: url(../public/fonts/Segoe\ UI.ttf);
+}
+
+@font-face {
+  font-family: Segoe UI Bold;
+  src: url(../public//fonts/Segoe\ UI\ Bold.ttf);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Segoe UI Italic;
+  src: url(../public//fonts/Segoe\ UI\ Bold\ Italic.ttf);
+  font-style: italic;
+}
+/* Cerebri Sans */
+@font-face {
+  font-family: Cerebri Sans;
+  src: url(../public//fonts/CerebriSansPro/CerebriSansPro-HeavyItalic.otf);
+  font-style: italic;
+}
+@font-face {
+  font-family: Cerebri Sans Light;
+  src: url(../public//fonts/CerebriSansPro/CerebriSansPro-ExtraLight.otf);
+  font-weight: lighter;
+}
+@font-face {
+  font-family: Cerebri Sans Bold;
+  src: url(../public//fonts/CerebriSansPro/CerebriSansPro-ExtraBold.otf);
+  font-style: bold;
+}
+
+@font-face {
+  font-family: Cerebri Sans;
+  src: url(../public//fonts/CerebriSansPro/CerebriSansPro-Regular.ttf);
+}
+
+/* Inter */
+@font-face {
+  font-family: Inter Light;
+  src: url(../public//fonts/Inter/Inter-Light.ttf);
+  font-style: light;
+}
+
+@font-face {
+  font-family: Inter Medium;
+  src: url(../public//fonts/Inter/Inter-Medium.ttf);
+  font-style: medium;
+}
+@font-face {
+  font-family: Inter Bold;
+  src: url(../public//fonts/Inter/Inter-Bold.ttf);
+  font-style: bold;
+}
+@font-face {
+  font-family: Inter;
+  src: url(../public//fonts/Inter/Inter-Regular.ttf);
+}
+/*Raleway */
+@font-face {
+  font-family: Raleway Italic;
+  src: url(../public//fonts/Raleway/Raleway-Italic.ttf);
+  font-style: italic;
+}
+@font-face {
+  font-family: Raleway Light;
+  src: url(../public//fonts/Raleway/Raleway-Light.ttf);
+  font-weight: lighter;
+}
+@font-face {
+  font-family: Raleway Bold;
+  src: url(../public//fonts/Raleway/Raleway-Bold.ttf);
+  font-style: bold;
+}
+
+@font-face {
+  font-family: Raleway;
+  src: url(../public//fonts/Raleway/Raleway-Regular.ttf);
+}
+/*TODO:use raleway font for sidenav text*/
+
+ html,
 body {
   padding: 0;
   margin: 0;
+ 
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    min-width: 400px !important;
 }
 
 a {
@@ -15,12 +108,16 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+.number{
+  font-family: 'Cerebri Sans';
 }
+.chakra-ui-light{
+  height: max-content !important;
+  background: var(--grey200) !important;
+
+}
+#nprogress .spinner {
+  display: none !important;
+}
+#nprogress .spinner-icon {
+ display: none !important;}
