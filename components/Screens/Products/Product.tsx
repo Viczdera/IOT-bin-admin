@@ -1,4 +1,4 @@
-/* eslint-disable react/no-children-prop */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Box,
@@ -42,7 +42,6 @@ import { useMutation, useQueryClient } from "react-query";
 import * as yup from "yup";
 import { GrHomeOption } from "react-icons/gr";
 import { TbCurrencyDollar, TbCurrencyNaira, TbEdit } from "react-icons/tb";
-import { usePostRequest } from "../../../hooks/allQueries";
 import { DataValueContext } from "../../../context/authContext";
 import { formatter, formatterUsd } from "../../../helpers/HelperFunctions";
 import OptionsVariants from "./components/OptionsVariants";
@@ -50,175 +49,41 @@ const boxShadow = "rgba(0, 0, 0, 0.1) 0px 1px 2px 0.4px";
 const boxShadow1 = " rgba(0, 0, 0, 0.18) 0px 2px 4px";
 const boxShadow2 = " rgba(0, 0, 0, 0.04) 0px 3px 5px";
 const { Option } = Select;
-const NewProduct = (props: any) => {
-  const route = "/api/";
-  const queryClient = useQueryClient();
-  ///toast
+import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import { useGetRequest } from "../../../hooks/allQueries";
+
+const Product = (props: { id: any }) => {
+  const [product, setProduct] = React.useState<any>([]);
+  const [status, setStatus] = React.useState("");
+  const [showVariant, setShowVariant] = useState(true);
+  const [options, setOptions] = useState(false);
   const toast = useToast();
-  //refs
-  const price = useRef<HTMLInputElement>(null);
-  const priceDiscounted = useRef<HTMLInputElement>(null);
+  const rate = 439;
+  //fetch products
+  const { isLoading, data, isSuccess, isFetching } = useGetRequest(
+    `/api/products/${props.id}`,
+    `product-${props.id}`,
+    ""
+  );
+  useEffect(() => {
+    if (data?.status == 200) {
+      let d = data?.data?.data;
+      let optionL=Object.keys(d?.options).length
+      console.log(optionL)
+      if (optionL> 0) {
+        setOptions(true);
+      }
+      setProduct(d);
+    }
+  }, [data]);
+  console.log(product);
+
   //context
   const { state, dispatch } = useContext(DataValueContext);
   const userCurrency = state?.currency;
-  //checkbox
-  const [checkedItems, setCheckedItems] = React.useState<any>([false]);
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-  //variants
-  const [variants, setVariants] = useState<any>([]);
   //pricing and currency
   const [currency, setCurrency] = useState("NGN");
-  const [priceData, setPriceData] = useState({ ngn: "", usd: "" });
-  const rate = 439;
-  //drawer
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: editIsOpen,
-    onOpen: editOnOpen,
-    onClose: editOnClose,
-  } = useDisclosure();
-  const btnRef = useRef<HTMLInputElement>(null);
-
-  //options
-  const [options, setOptions] = useState(false);
-  const [formValues, setFormValues] = useState<any>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [showVariant, setShowVariant] = useState(true);
-  //check funct
-  //console.log(formValues);
-  const onChangeCheck = () => {
-    if (options == true) {
-      let newValues: never[] = [];
-      //newValues.splice(0, newValues.length);
-      setFormValues(newValues);
-      setOptions(false);
-    } else {
-      let newValues: never[] = [];
-      setFormValues(newValues);
-      addOptions();
-
-      setOptions(true);
-    }
-  };
-
-  //drawer funct
-  const addOptions = () => {
-    onOpen();
-    // setFormValues([...formValues, { name: "" }]);
-  };
-
-  const onCloseDrawer = () => {
-    if (formValues.length == 0) {
-      let newValues: never[] = [];
-      //newValues.splice(0, newValues.length);
-      setFormValues(newValues);
-      setOptions(false);
-    }
-    onClose();
-  };
-
-  const openEditDrawer = (index: number) => {
-    setActiveIndex(index);
-    editOnOpen();
-  };
-  // useEffect(() => {
-  //   console.log(formValues);
-  // }, [formValues]);
-
-  //testing combination
-  function cartesian(args: any) {
-    var r: any = [],
-      max = args.length - 1;
-    function helper(arr: any, i: any) {
-      for (var j = 0, l = args[i].length; j < l; j++) {
-        var a = arr.slice(0); // clone arr
-
-        a.push(args[i][j]);
-        if (i == max) r.push(a);
-        else helper(a, i + 1);
-      }
-    }
-    helper([], 0);
-    let erd = r.map((m: any) => {
-      return Object.assign({}, m);
-    });
-    return erd;
-  }
-  const dVariants = () => {
-    let optionValues = formValues.map((m: any) => {
-      return m.values;
-    });
-    return optionValues.length > 0 ? cartesian(optionValues) : [];
-  };
-  // console.log(dVariants());
-  function mapVariants() {
-    let variantsWithOptions = dVariants().map((m: any) => {
-      return Object.fromEntries(
-        Object.entries(m).map(([key, value]) => {
-          let no_ = parseInt(key) + 1;
-          return [`option${no_}`, value];
-        })
-      );
-    });
-    //add price
-    variantsWithOptions.map((m: any, i: number) => {
-      m.price = priceData;
-    });
-    setVariants(variantsWithOptions);
-  }
-
-  useEffect(() => {
-    dVariants();
-    mapVariants();
-  }, [formValues]);
-
-  const handleValidation = yup.object().shape({
-    title: yup.string().required("Title is required"),
-    description: yup.string().required("Description is required"),
-    status: yup.string().required("Status is required"),
-    sku: yup.string().required("SKU (Store Keeping Unit) is required"),
-    // price: yup.number().required("Product price is required"),
-    price: yup.object({
-      ngn: yup.number().required("Product price is required"),
-      usd: yup.number().required("Product price is required"),
-    }),
-    quantity: yup
-      .number()
-      .min(1, "Quantity must be at least one")
-      .typeError("Quantity must be a number")
-      .required("Provide quantity"),
-    // images: yup
-    //   .array()
-    //   .min(1, "A product image is required")
-    //   .required("Product image is required"),
-  });
-
-  const prices: {
-    ngn: string;
-    usd: string;
-  } = { ngn: "", usd: "" };
-  const initialFormValues = {
-    title: "",
-    description: "",
-    sku: "",
-    quantity: 1,
-    price: prices,
-    priceDiscounted: prices,
-    variants: variants,
-    status: "active",
-    images: [""],
-    options: formValues,
-  };
-  //post request
-  //console.log(accessToken)
-  const { createPost, isLoading, isSuccess, data } = usePostRequest(
-    true,
-    "/api/products/products",
-  );
-  if (data?.status == 200 || 201) {
-    console.log(data);
-  }
   const handleCurrencyChange = (value: string) => {
     setShowVariant(false);
     setTimeout(() => {
@@ -235,22 +100,18 @@ const NewProduct = (props: any) => {
     });
   };
   useEffect(() => setCurrency(userCurrency), [userCurrency]);
-  //console.log(currency);
+  const toInt=(number:string)=>{
+    return parseFloat(number)
+  }
   return (
     <>
+    
+    {isSuccess?<>
       <Box mt="20px" minH="100vh">
         <Formik
-          initialValues={initialFormValues}
-          validationSchema={handleValidation}
-          onSubmit={(values, actions) => {
-            values.options = formValues;
-            values.variants = variants;
-            console.log(values);
-             createPost(values);
-            // if (data?.status == 200 || data?.status == 201) {
-            //   actions.resetForm(initialFormValues);
-            // }
-          }}
+          initialValues={product}
+          validationSchema={""}
+          onSubmit={() => {}}
         >
           {(props: {
             setFieldValue: any;
@@ -259,21 +120,25 @@ const NewProduct = (props: any) => {
             setFieldTouched: any;
             touched: any;
           }) => (
+
             <Form>
               <Flex flexDir={{ base: "column", lg: "row" }} alignItems="center">
                 <Box w={{ base: "100%", lg: "60%" }}>
+                 
                   <Box style={styles.cardCont}>
                     <FormControl
-                      isInvalid={props.errors.title && props.touched.title}
+                      //isInvalid={props.errors.title && props.touched.title}
                       padding={{ base: "10px", md: "20px" }}
                     >
                       <FormLabel htmlFor="title" style={styles.title}>
                         Title
                       </FormLabel>
                       <Input
+                        disabled
                         name="title"
                         placeholder="title"
-                        value={props.values.title}
+                        value={product.title}
+                        isDisabled
                         h="40px"
                         type="text"
                         onChange={(e) => {
@@ -281,15 +146,15 @@ const NewProduct = (props: any) => {
                         }}
                       />
 
-                      <FormErrorMessage mt="10px">
+                      {/* <FormErrorMessage mt="10px">
                         {props.errors.title}
-                      </FormErrorMessage>
+                      </FormErrorMessage> */}
                     </FormControl>
 
                     <FormControl
-                      isInvalid={
-                        props.errors.description && props.touched.description
-                      }
+                      //   isInvalid={
+                      //     props.errors.description && props.touched.description
+                      //   }
                       px={{ base: "10px", md: "20px" }}
                       pb={{ base: "10px", md: "20px" }}
                       mt="9px"
@@ -299,19 +164,20 @@ const NewProduct = (props: any) => {
                       </FormLabel>
                       <Textarea
                         name="description"
-                        value={props.values.description}
+                        value={product.description}
                         placeholder="product detail"
                         h="40px"
                         resize="none"
                         minH="150px"
-                        onChange={(e) => {
-                          props.setFieldValue("description", e.target.value);
-                        }}
+                        isDisabled
+                        // onChange={(e) => {
+                        //   props.setFieldValue("description", e.target.value);
+                        // }}
                       />
 
-                      <FormErrorMessage>
+                      {/* <FormErrorMessage>
                         {props.errors.description}
-                      </FormErrorMessage>
+                      </FormErrorMessage> */}
                       <Box>
                         <Text
                           borderBottom="2px solid black"
@@ -336,26 +202,27 @@ const NewProduct = (props: any) => {
                 >
                   <Box style={styles.cardCont}>
                     <FormControl
-                      isInvalid={props.errors.status && props.touched.status}
+                      // isInvalid={props.errors.status && props.touched.status}
                       padding={{ base: "10px", md: "20px" }}
                     >
                       <FormLabel htmlFor="status" style={styles.title}>
                         Product Status
                       </FormLabel>
                       <Select
-                        defaultValue="active"
+                        defaultValue={product?.status}
                         style={{ width: "100%" }}
                         onChange={(value: string) => {
                           props.setFieldValue("status", value);
                         }}
+                        disabled
                       >
                         <Option value="active">Active</Option>
                         <Option value="draft">Draft</Option>
                       </Select>
 
-                      <FormErrorMessage mt="10px">
+                      {/* <FormErrorMessage mt="10px">
                         {props.errors.status}
-                      </FormErrorMessage>
+                      </FormErrorMessage> */}
                     </FormControl>
                   </Box>
 
@@ -376,49 +243,51 @@ const NewProduct = (props: any) => {
                         flexDir={{ base: "column", sm: "row" }}
                       >
                         <FormControl
-                          isInvalid={props.errors.sku && props.touched.sku}
+                          // isInvalid={props.errors.sku && props.touched.sku}
                           mr="20px"
                         >
                           <FormLabel htmlFor="sku" fontSize="14px">
                             SKU <p> (Stock Keeping Unit)</p>
                           </FormLabel>
                           <Input
+                            disabled
                             name="sku"
                             min={1}
                             placeholder="sku"
-                            value={props.values.sku}
+                            value={product.sku}
                             h="40px"
                             onChange={(e) => {
                               props.setFieldValue("sku", e.target.value);
                             }}
                           />
 
-                          <FormErrorMessage mt="10px">
+                          {/* <FormErrorMessage mt="10px">
                             {props.errors.sku}
-                          </FormErrorMessage>
+                          </FormErrorMessage> */}
                         </FormControl>
                       </Flex>
 
                       <Box px={{ base: "10px", md: "20px" }} mt="20px">
                         <FormControl
-                          isInvalid={
-                            props.errors.quantity && props.touched.quantity
-                          }
+                        //   isInvalid={
+                        //     props.errors.quantity && props.touched.quantity
+                        //   }
                         >
                           <FormLabel htmlFor="quantity" fontSize="14px">
                             Quantity
                           </FormLabel>
                           <NumberInput
-                            value={props.values.quantity}
+                            isDisabled
+                            value={product.quantity}
                             name="quantity"
                             width="100%"
                             height="40px"
                             min={1}
                             max={5000}
                             clampValueOnBlur={true}
-                            onChange={(value: any) => {
-                              props.setFieldValue("quantity", value);
-                            }}
+                            // onChange={(value: any) => {
+                            //   props.setFieldValue("quantity", value);
+                            // }}
                           >
                             <NumberInputField
                               _focus={{ border: "2px solid var(--black100)" }}
@@ -435,9 +304,9 @@ const NewProduct = (props: any) => {
                             </NumberInputStepper>
                           </NumberInput>
 
-                          <FormErrorMessage mt="10px">
+                          {/* <FormErrorMessage mt="10px">
                             {props.errors.quantity}
-                          </FormErrorMessage>
+                          </FormErrorMessage> */}
                         </FormControl>
                       </Box>
                     </Box>
@@ -454,6 +323,7 @@ const NewProduct = (props: any) => {
                       Pricing
                     </Text>
                     <Select
+                      // disabled
                       style={{ width: "80px" }}
                       value={currency}
                       onChange={handleCurrencyChange}
@@ -475,11 +345,11 @@ const NewProduct = (props: any) => {
                     flexDir={{ base: "column", sm: "row" }}
                   >
                     <FormControl
-                      isInvalid={
-                        currency == "NGN"
-                          ? props.errors.price?.ngn && props.touched.price?.ngn
-                          : props.errors.price?.usd && props.touched.price?.usd
-                      }
+                      //   isInvalid={
+                      //     currency == "NGN"
+                      //       ? props.errors.price?.ngn && props.touched.price?.ngn
+                      //       : props.errors.price?.usd && props.touched.price?.usd
+                      //   }
                       mr="20px"
                     >
                       <FormLabel htmlFor="price" fontSize="14px">
@@ -488,14 +358,15 @@ const NewProduct = (props: any) => {
                       <Box style={styles.inputBox}>
                         <Flex alignItems="center">
                           {/* <Icon
-                            as={
-                              currency == "NGN"
-                                ? TbCurrencyNaira
-                                : TbCurrencyDollar
-                            }
-                            fontSize="18px"
-                          /> */}
+                          as={
+                            currency == "NGN"
+                              ? TbCurrencyNaira
+                              : TbCurrencyDollar
+                          }
+                          fontSize="18px"
+                        /> */}
                           <Input
+                            disabled
                             name="price"
                             border="none"
                             min={0}
@@ -503,39 +374,13 @@ const NewProduct = (props: any) => {
                             h="30px"
                             fontSize="18px"
                             fontWeight="bold"
-                            ref={price}
+                            // ref={price}
                             placeholder="0"
                             value={
                               currency == "NGN"
-                                ? props.values.price.ngn
-                                : props.values.price.usd
+                                ? product.price?.ngn||0
+                                : product.price?.usd||0
                             }
-                            onChange={(e) => {
-                              if (currency == "NGN") {
-                                let p: any = e.target.value;
-                                let pUsd = p / rate;
-                                setPriceData({
-                                  ngn: p,
-                                  usd: pUsd.toFixed(2),
-                                });
-                                props.setFieldValue("price", {
-                                  ngn: p,
-                                  usd: pUsd.toFixed(2),
-                                });
-                              } else {
-                                let p: any = parseFloat(e.target.value);
-                                p.toFixed(2);
-                                let pNgn = p * rate;
-                                setPriceData({
-                                  ngn: pNgn.toString(),
-                                  usd: p,
-                                });
-                                props.setFieldValue("price", {
-                                  ngn: pNgn,
-                                  usd: p,
-                                });
-                              }
-                            }}
                           />
                         </Flex>
                         <Flex
@@ -553,17 +398,11 @@ const NewProduct = (props: any) => {
                           />
                           <Text>
                             {currency == "NGN"
-                              ? formatterUsd.format(props.values.price.usd)
-                              : formatter.format(props.values.price.ngn)}
+                              ? formatterUsd.format(product?.price?.usd||0)
+                              : formatter.format(product?.price?.ngn||0)}
                           </Text>
                         </Flex>
                       </Box>
-
-                      <FormErrorMessage mt="10px">
-                        {currency == "NGN"
-                          ? props.errors.price?.ngn
-                          : props.errors.price?.usd}
-                      </FormErrorMessage>
                     </FormControl>
 
                     <FormControl mr="20px">
@@ -573,6 +412,7 @@ const NewProduct = (props: any) => {
                       <Box style={styles.inputBox}>
                         <Flex alignItems="center">
                           <Input
+                            disabled
                             name="priceDiscounted"
                             border="none"
                             min={0}
@@ -583,29 +423,9 @@ const NewProduct = (props: any) => {
                             placeholder="0"
                             value={
                               currency == "NGN"
-                                ? props.values.priceDiscounted.ngn
-                                : props.values.priceDiscounted.usd
+                                ? product.priceDiscounted?.ngn||0
+                                : product.priceDiscounted?.usd||0
                             }
-                            onChange={(e) => {
-                              if (currency == "NGN") {
-                                let p: any = e.target.value;
-                                let pUsd = p / rate;
-
-                                props.setFieldValue("priceDiscounted", {
-                                  ngn: p,
-                                  usd: pUsd.toFixed(2),
-                                });
-                              } else {
-                                let p: any = parseFloat(e.target.value);
-                                p.toFixed(2);
-                                let pNgn = p * rate;
-
-                                props.setFieldValue("priceDiscounted", {
-                                  ngn: pNgn,
-                                  usd: p,
-                                });
-                              }
-                            }}
                           />
                         </Flex>
                         <Flex
@@ -624,10 +444,10 @@ const NewProduct = (props: any) => {
                           <Text>
                             {currency == "NGN"
                               ? formatterUsd.format(
-                                  props.values.priceDiscounted.usd
+                                  product.priceDiscounted?.usd||0
                                 )
                               : formatter.format(
-                                  props.values.priceDiscounted.ngn
+                                  product.priceDiscounted?.ngn||0
                                 )}
                           </Text>
                         </Flex>
@@ -638,7 +458,7 @@ const NewProduct = (props: any) => {
               </Box>
               <Box style={styles.cardCont} mt={{ base: "20px", md: "30px" }}>
                 <FormControl
-                 // isInvalid={props.errors.images && props.touched.images}
+                // isInvalid={props.errors.images && props.touched.images}
                 >
                   <UploadImage
                     setFieldValue={props.setFieldValue}
@@ -646,12 +466,11 @@ const NewProduct = (props: any) => {
                   />
 
                   {/* <FormErrorMessage px={{ base: "10px", md: "20px" }} pb="10px">
-                    {props.errors.images}
-                  </FormErrorMessage> */}
+                  {props.errors.images}
+                </FormErrorMessage> */}
                 </FormControl>
               </Box>
 
-              {/* <OptionsVariants setFieldValue={setFieldValue} /> */}
               <Box>
                 <Box style={styles.cardCont} mt={{ base: "20px", md: "30px" }}>
                   <FormControl>
@@ -670,9 +489,9 @@ const NewProduct = (props: any) => {
                         <Switch
                           mr="10px"
                           isChecked={options}
-                          onChange={() => {
-                            onChangeCheck();
-                          }}
+                          //   onChange={() => {
+                          //     onChangeCheck();
+                          //   }}
                         />
                         <Text>
                           This product has options, like size or color
@@ -687,7 +506,7 @@ const NewProduct = (props: any) => {
                             //  flexDir={{ base: "column", lg: "row" }}
                             flexWrap="wrap"
                           >
-                            {formValues.length == 0 ? (
+                            {!options ? (
                               ""
                             ) : (
                               <Flex
@@ -695,7 +514,7 @@ const NewProduct = (props: any) => {
                                 flexWrap="wrap"
                                 w="100%"
                               >
-                                {formValues.map((m: any, i: number) => (
+                                {product.options?.map((m: any, i: number) => (
                                   <Box
                                     width={{ base: "100%", lg: "50%" }}
                                     key={i}
@@ -725,7 +544,7 @@ const NewProduct = (props: any) => {
                                           ))}
                                         </Wrap>
                                       </Box>
-                                      <IconButton
+                                      {/* <IconButton
                                         size="sm"
                                         onClick={() => {
                                           openEditDrawer(i);
@@ -733,7 +552,7 @@ const NewProduct = (props: any) => {
                                         aria-label={"edit-option-btn"}
                                       >
                                         <TbEdit />
-                                      </IconButton>
+                                      </IconButton> */}
                                     </Flex>
                                   </Box>
                                 ))}
@@ -746,12 +565,12 @@ const NewProduct = (props: any) => {
                             pb={{ base: "10px", md: "20px" }}
                             cursor="pointer"
                             _hover={{ color: "blue.600" }}
-                            onClick={() => {
-                              onOpen();
-                            }}
+                            // onClick={() => {
+                            //   onOpen();
+                            // }}
                           >
                             <Icon as={HiViewGridAdd} mr="10px" boxSize="20px" />{" "}
-                            <Text>Add option</Text>
+                            {/* <Text>Add option</Text> */}
                           </Flex>
                         </Box>
                       ) : (
@@ -778,51 +597,33 @@ const NewProduct = (props: any) => {
                     </Box>
                     <OptionsVariants
                       rate={rate}
-                      variants={variants}
+                      variants={product?.variants}
                       setFieldValue={props.setFieldValue}
                       currency={currency}
                       showVariant={showVariant}
                       options={options}
-                      images={props.values?.images}
+                      images={product?.images}
                     />
                   </FormControl>
                 </Box>
               ) : (
                 ""
               )}
-              <Button
-                type="submit"
-                mt="20px"
-                backgroundColor="black.100"
-                color="white"
-                width="100%"
-                isLoading={isLoading}
-              >
-                Add Product
-              </Button>
+              {/* <Button
+              type="submit"
+              mt="20px"
+              backgroundColor="black.100"
+              color="white"
+              width="100%"
+              isLoading={isLoading}
+            >
+              Add Product
+            </Button> */}
             </Form>
           )}
         </Formik>
       </Box>
-      <OptionsForm
-        setformValues={setFormValues}
-        formValues={formValues}
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onCloseDrawer={onCloseDrawer}
-        onClose={onClose}
-        btnRef={btnRef}
-      />
-
-      <EditOptions
-        index={activeIndex}
-        setformValues={setFormValues}
-        formValues={formValues}
-        isOpen={editIsOpen}
-        onOpen={editIsOpen}
-        onClose={editOnClose}
-        btnRef={btnRef}
-      />
+    </>:"Error"}
     </>
   );
 };
@@ -867,4 +668,5 @@ const styles = {
     },
   },
 };
-export default NewProduct;
+
+export default Product;

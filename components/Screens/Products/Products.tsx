@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import {
   Box,
@@ -18,49 +17,34 @@ import { Table } from "antd";
 import { useQuery } from "react-query";
 import Link from "next/link";
 import Router from "next/router";
+import { useGetRequest } from "../../../hooks/allQueries";
+import { formatter } from "../../../helpers/HelperFunctions";
 
-const { Column, ColumnGroup } = Table;
+//const { Column, ColumnGroup } = Table;
 const boxShadow = "rgba(0, 0, 0, 0.1) 0px 1px 2px 0.4px";
-const boxShadow1 = " rgba(0, 0, 0, 0.18) 0px 2px 4px";
-const boxShadow2 = " rgba(0, 0, 0, 0.04) 0px 3px 5px";
-
 function Products(props: any) {
   const [products, setProducts] = React.useState([]);
   const [status, setStatus] = React.useState("");
   //table
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const route = "/api/";
+
   //fetch products
-
-  const fetchProduct = async (status: any) => {
-    const res = await fetch(route + `shop/products/filters?status=${status}`);
-    return await res.json();
-  };
-
-  //query data
-  const {
-    data: prodData,
-    isLoading,
-    error,
-    isFetching,
-  } = useQuery(
-    ["products", status],
-    () => {
-      return fetchProduct(status);
-    },
-    {
-      onSuccess: (data: any) => {
-        console.log(data);
-        let d = data?.data?.products;
-        setProducts(d);
-      },
-    }
+  const { isLoading, data, isSuccess, isFetching } = useGetRequest(
+    "/api/products",
+    "allProducts",
+    ""
   );
-
+  useEffect(() => {
+    if (data?.status == 200) {
+      let d = data?.data?.data;
+      setProducts(d);
+    }
+  }, [data]);
+  console.log(products);
   //Add keys to product
   const tableData = products?.map((m: any, i) => {
-    m.key = m.id;
+    m.key = m._id;
     return m;
   });
 
@@ -79,7 +63,7 @@ function Products(props: any) {
       render: (data: any, i: any) => (
         <Image
           alt={`${i}image`}
-          src={data[0].src}
+          src={data[0]||""}
           width="50px"
           height="52px"
           style={{ borderRadius: "2px" }}
@@ -91,6 +75,12 @@ function Products(props: any) {
       dataIndex: "title",
       key: 1,
       render: (data: any) => <Text>{data}</Text>,
+    },
+    {
+      title: () => <Text fontWeight={700}>Price</Text>,
+      dataIndex: "price",
+      key: 1,
+      render: (data: any) => <Text>{formatter.format(data?.ngn)}</Text>,
     },
     {
       title: () => <Text fontWeight={700}>Status</Text>,
@@ -129,7 +119,7 @@ function Products(props: any) {
     },
     {
       title: "",
-      dataIndex: "id",
+      dataIndex: "key",
       key: 3,
       render: (data: any) => (
         <Box cursor="pointer" margin="0 auto" w="fit-content">
@@ -164,7 +154,7 @@ function Products(props: any) {
     <Box
       borderRadius="5px"
       background="white.100"
-      minHeight='80vh'
+      minHeight="80vh"
       py={{ base: "8px", sm: "15px" }}
       boxShadow={boxShadow}
     >
@@ -188,25 +178,10 @@ function Products(props: any) {
           >
             Add Product
           </Button>
-          {/* <Button
-            style={styles.addBtn}
-            border="0.2px solid #7472726c"
-            _hover={styles.addBtn._focus}
-            onClick={() => {
-             DownloadExcel(products)
-            }}
-          >
-            Download
-          </Button> */}
         </Flex>
       </Flex>
 
-      <Box
-        // border="1px solid #DDE1E6"
-
-        overflow="hidden"
-        overflowX="scroll"
-      >
+      <Box overflow="hidden" overflowX="scroll">
         <Box pos="relative" mb="70px">
           <Box
             pos="absolute"
@@ -214,10 +189,10 @@ function Products(props: any) {
             w="100%"
             zIndex={10}
             background="white"
-            borderBottomRadius='5px'
+            borderBottomRadius="5px"
           >
             <Flex
-              bgColor="black.200"
+              bgColor="blue.200"
               borderRadius="8px"
               mx={{ base: "8px", sm: "15px" }}
               justifyContent="space-between"
@@ -233,7 +208,7 @@ function Products(props: any) {
                     placeholder="Filter Fields"
                     fontSize="13px"
                     height="30px"
-                    background='grey.200'
+                    background="grey.200"
                     _focus={styles.form._focus}
                   />
                 </form>
@@ -262,11 +237,12 @@ function Products(props: any) {
                 </Select>
               </Box>
             </Flex>
-            {isFetching &&   <Flex alignItems='center'  p={{ base: "8px", sm: "15px" }}>
-            
-          <Spinner mr='10px' size='sm' /><Text>Loading ...</Text>
-            </Flex>}
-         
+            {isFetching && (
+              <Flex alignItems="center" p={{ base: "8px", sm: "15px" }}>
+                <Spinner mr="10px" size="sm" />
+                <Text>Loading ...</Text>
+              </Flex>
+            )}
           </Box>
         </Box>
         <Box px={{ base: "8px", sm: "15px" }}>
@@ -280,7 +256,7 @@ function Products(props: any) {
               border: "1px solid #2f3d4944",
               borderRadius: "5px",
               overflowX: "auto",
-              minHeight:'80vh'
+              minHeight: "80vh",
             }}
           ></Table>
         </Box>

@@ -11,8 +11,6 @@ import React, { useEffect } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer, Cell } from "recharts";
 
 function DoughnutChart(props: any) {
-  const [labels, setLabels] = React.useState<any>([]);
-  const [values, setValues] = React.useState<any>([]);
   const [loaded, setLoaded] = React.useState(false);
   const [isLargerThan1000] = useMediaQuery("(min-width: 900px)");
   const chartData = [

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRouter } from "next/router";
 import { useToast } from "@chakra-ui/react";
 import { useContext } from "react";
@@ -15,7 +15,7 @@ export const headers = (json: boolean, access_token?: string) => {
     Authorization: `Bearer ${access_token}`,
   };
 };
-export const headers2 = ( access_token?: string) => {
+export const headers2 = (access_token?: string) => {
   return {
     "Access-Control-Allow-Origin": "*",
     // Accept: "application/json",
@@ -23,77 +23,39 @@ export const headers2 = ( access_token?: string) => {
   };
 };
 
-// export const useGetRequest = (endpoint, nameOfRequest, access_token) => {
-//   const [errorResp, setErrorResp] = useState();
-//   const [successResp, setSuccessResp] = useState();
-
-//   const headers = {
-//     "Content-Type": "application/json",
-//     "Access-Control-Allow-Origin": "*",
-//     "Accept": "application/json",
-//     "Authorization": `Bearer ${access_token}`
-//   };
-
-//   const fetchResult = async () => {
-
-//     try {
-//       const res = await axios.get(
-//         `${baseUrl}/${endpoint}`,
-//         { headers: headers }
-//       );
-//       setSuccessResp(res.data);
-//     } catch (error) {
-//       setErrorResp({
-//         errorStatus: error.response.status,
-//         errorResponse: error.response.data.message,
-//       });
-//     }
-//   };
-
-//   const { isLoading } = useQuery(`${nameOfRequest}`, () => fetchResult());
-//   return { successResp, isLoading, errorResp };
-// };
-
-export const usePostRequest = (
-  json: boolean = true,
-  endpoint: string,
-  access_token?: string
-) => {
+export const useGetRequest = (endpoint: string,queryName:string, access_token?: string) => {
   const Toast = useToast();
-  const { state, dispatch } = useContext(DataValueContext);
-  const router = useRouter();
+  const headers = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    Accept: "application/json",
+    Authorization: `Bearer ${access_token}`,
+  };
 
-  const createRequest = async (formData: any) => {
+  const fetchData = async () => {
     try {
-      const res = await axios.post(`${ endpoint}`, formData, {
-        headers: headers(json, access_token),
-      });
+      const res = await axios.get(`${endpoint}`, { headers: headers });
       let data = {
         status: res.status,
         data: res.data,
       };
-      // console.log(data);
+      console.log(data);
       return data;
     } catch (error: any) {
       let err = {
         status: error?.response?.status,
-       error: error?.response?.data,
+        error: error?.response?.data,
       };
-      return err||error;
+      return err || error;
     }
   };
 
-  const {
-    mutateAsync: createPost,
-    isLoading,
-    isSuccess,
-    data,
-  } = useMutation(createRequest, {
+  const { isLoading, isSuccess,isFetching, data } = useQuery(queryName, () => fetchData(), {
     onSuccess: (response: any) => {
-      console.log(response)
+      console.log(response);
       let s = response?.status;
       let e = response?.error;
-      let d=response?.data
+      let d = response?.data;
       if (s == 200 || s == 201) {
         Toast({
           position: "top-right",
@@ -116,7 +78,82 @@ export const usePostRequest = (
       }
     },
     onError: (error: any) => {
-      console.log(error)
+      console.log(error);
+      Toast({
+        position: "top-right",
+        title: "Error",
+        description: error,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    },
+  });
+  return { isLoading, isSuccess,isFetching, data };
+};
+
+export const usePostRequest = (
+  json: boolean = true,
+  endpoint: string,
+  access_token?: string
+) => {
+  const Toast = useToast();
+  const { state, dispatch } = useContext(DataValueContext);
+
+  const createRequest = async (formData: any) => {
+    try {
+      const res = await axios.post(`${endpoint}`, formData, {
+        headers: headers(json, access_token),
+      });
+      let data = {
+        status: res.status,
+        data: res.data,
+      };
+      // console.log(data);
+      return data;
+    } catch (error: any) {
+      let err = {
+        status: error?.response?.status,
+        error: error?.response?.data,
+      };
+      return err || error;
+    }
+  };
+
+  const {
+    mutateAsync: createPost,
+    isLoading,
+    isSuccess,
+    data,
+  } = useMutation(createRequest, {
+    onSuccess: (response: any) => {
+      console.log(response);
+      let s = response?.status;
+      let e = response?.error;
+      let d = response?.data;
+      if (s == 200 || s == 201) {
+        Toast({
+          position: "top-right",
+          title: "Success.",
+          description: d?.message,
+          status: "success",
+          duration: 1500,
+          isClosable: true,
+        });
+        // queryClient.invalidateQueries("all_linked_devices");
+      } else {
+        Toast({
+          position: "top-right",
+          title: "Error",
+          description: e?.message,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    },
+    onError: (error: any) => {
+      console.log(error);
       Toast({
         position: "top-right",
         title: "Error",
