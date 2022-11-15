@@ -25,12 +25,12 @@ const signup = async (req: any, res: any) => {
         if (userExist) {
             return res
                 .status(400)
-                .json({ error: "Email or Phone number already exists" });
+                .json({ success: false, message: "Email or Phone number already exists" });
         }
         const user = await newAdminUser.save()
         return res.status(200).json({
             success: true,
-            message:"Signup Successful",
+            message: "Signup Successful",
             data: user
         })
 

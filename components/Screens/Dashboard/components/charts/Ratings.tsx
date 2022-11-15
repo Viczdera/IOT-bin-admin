@@ -60,7 +60,7 @@ const Ratings = (props: any) => {
             borderTopRightRadius: "6px",
             borderBottomRightRadius: "6px",
             // backgroundColor:{props.color}
-            backgroundColor: "var(--blue100)",
+            backgroundColor: "var(--blue200)",
           }}
           animate={{
             width: load && props.width,

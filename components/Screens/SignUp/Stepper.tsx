@@ -22,13 +22,13 @@ const Stepper = (props: {
     return (
       <Box w="100%"  cursor={step>=index+1?'pointer':''} onClick={moveStep}>
         <Text
-          color={step >= index + 1 ? "black.100" : "grey.500"}
+          color={step >= index + 1 ? "blue.200" : "grey.500"}
           // fontWeight= {step == index + 1 ? "bold" : "normal"}
         >
           {item}
         </Text>
         <Box
-          background={step >= index + 1 ? "black.100" : "grey.500"}
+          background={step >= index + 1 ? "blue.200" : "grey.500"}
           w="100%"
           h="5px"
         ></Box>

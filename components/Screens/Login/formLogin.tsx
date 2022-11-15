@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import {
   Box,
   Button,
@@ -39,12 +40,15 @@ function LoginForm(props: any) {
   const { state, dispatch } = useContext(DataValueContext);
   console.log(state);
   //post request
-  const { createPost, isLoading, data } = usePostRequest(true,"/api/auth/signin");
+  const { createPost, isLoading, data } = usePostRequest(
+    true,
+    "/api/auth/signin"
+  );
   useEffect(() => {
     if (data?.status == 200) {
       console.log(data);
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
-      router.push('/')
+      router.push("/");
     } else {
       console.log(data);
       dispatch({ type: "LOGIN_FAILURE", payload: data });
@@ -70,7 +74,7 @@ function LoginForm(props: any) {
           touched: any;
         }) => (
           <Form>
-            <span style={styles.span}>Manage your vendor account</span>
+            <span style={styles.span}>Manage your shop</span>
 
             <Box mt="15px">
               <FormControl>
@@ -134,18 +138,18 @@ function LoginForm(props: any) {
             >
               LOGIN
             </Button>
+            <Text textAlign="center" mt="10px" fontSize="14px">
+              Don't have an account?
+            </Text>
             <Text
-              textAlign="center"
               textDecoration="underline"
-              mt="10px"
+              textAlign="center"
+              mt="4px"
               fontSize="14px"
             >
               <Link href="/signup" passHref>
                 Sign Up
               </Link>
-            </Text>
-            <Text textAlign="center" mt="10px" fontSize="14px">
-              Forgot password? <Link href="">Reset it</Link>
             </Text>
           </Form>
         )}
@@ -188,7 +192,7 @@ const styles = {
     },
   },
   button: {
-    backgroundColor: "#0e0d0d",
+    backgroundColor: "var(--blue200)",
     color: "#fff",
     width: "100%",
     active: {},
@@ -202,6 +206,7 @@ const styles = {
   },
   span: {
     fontSize: "14px",
+    color: "var(--blue200) ",
   },
 };
 export default LoginForm;

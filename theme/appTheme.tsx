@@ -10,7 +10,7 @@ const appTheme = extendTheme({
       100: "#00000097",
       200: "#c3c2c213",
       300: "#f7f8fb",
-      400: "#fcfdff",
+      400: "#535b63",
       500: "#D5D5D5",
     },
     white: {
@@ -25,12 +25,12 @@ const appTheme = extendTheme({
       100: "#f24f62",
     },
     blue: {
-      100: "#3975cf",
+      200: "#23406b",
     },
   },
   fonts: {
-    heading: "Segoe UI, sans-serif",
-    body: "Inter, sans-serif",
+    heading: "Raleway, sans-serif",
+    body: "Raleway, sans-serif",
   },
   fontWeights: {
     hairline: 100,

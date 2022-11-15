@@ -42,7 +42,7 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
       body: data.toString(),
     };
     console.log(config);
-    const res = await fetch(route + `shop/products/images`, config);
+    const res = await fetch(route + `products/images`, config);
     return await res.json();
   };
   const UploadImage = useMutation(

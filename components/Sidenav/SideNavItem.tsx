@@ -30,7 +30,7 @@ const SideNavItem = (props: navProps) => {
       borderTop={isActive?'1px solid  #E5EBF0':'none'}
       borderBottom={isActive?'1px solid  #E5EBF0':'none'}
     _hover={{backgroundColor:`${!isActive && "grey.200"}`}}
-      color={isActive ? "black.100" : "#535b63"}
+      color={isActive ? "black.100" : "grey.400"}
       
       pl={props.sideNavSize == "large" ? "5" : ""}
       cursor='pointer'

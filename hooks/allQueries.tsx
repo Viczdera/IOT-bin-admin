@@ -77,9 +77,9 @@ export const usePostRequest = (
     } catch (error: any) {
       let err = {
         status: error?.response?.status,
-        error: error?.response?.data?.error,
+       error: error?.response?.data,
       };
-      return err || error;
+      return err||error;
     }
   };
 
@@ -104,21 +104,11 @@ export const usePostRequest = (
           isClosable: true,
         });
         // queryClient.invalidateQueries("all_linked_devices");
-      } else if (s == 401 || s == 403) {
-        Toast({
-          position: "top-right",
-          title: "Error",
-          description: 'Session expired',
-          status: "error",
-          duration: 2000,
-          isClosable: true,
-        });
-        dispatch({ type: "LOGOUT", payload: "" });
       } else {
         Toast({
           position: "top-right",
           title: "Error",
-          description: JSON.stringify(e),
+          description: e?.message,
           status: "error",
           duration: 2000,
           isClosable: true,
@@ -126,6 +116,7 @@ export const usePostRequest = (
       }
     },
     onError: (error: any) => {
+      console.log(error)
       Toast({
         position: "top-right",
         title: "Error",

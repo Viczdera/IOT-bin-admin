@@ -2,12 +2,11 @@ import mongoose, { Schema, model, models, Model } from "mongoose";
 //interface repres a doc in mongoDb
 interface IProduct {
   title: string;
-  vendor: any;
   description: string;
-  price: number;
+  price:{ ngn:any,usd:any};
   sku: string;
   quantity: number;
-  priceDiscounted: number;
+  priceDiscounted: { ngn:any,usd:any};
   variants: any;
   options: any[];
   images: [string];
@@ -21,16 +20,11 @@ const ProductSchema = new Schema<IProduct>(
       unique: true,
       required: true,
     },
-    vendor: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Vendor",
-      required: true,
-    },
     description: {
       type: String,
     },
     price: {
-      type: Number,
+      type:Object,
     },
     sku: {
       type: String,
@@ -39,10 +33,10 @@ const ProductSchema = new Schema<IProduct>(
       type: Number,
     },
     priceDiscounted: {
-      type: Number,
+      type: Object,
     },
     variants: {
-      type: [mongoose.Schema.Types.ObjectId],
+      type: [],
       ref: "Variant",
       required: true,
     },

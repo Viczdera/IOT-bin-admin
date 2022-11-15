@@ -84,11 +84,12 @@ const Nav = () => {
         <Menu>
           <Flex width="100%" pl="2">
             <Flex alignItems="center" justifyContent="space-between" w="100%">
-              {/* <Box>
+              <Box>
                 <Link href="/" passHref>
-                  <Image src={logo} alt="logo" width="120px" height="40px" />
+       
+                  <Image src="/shopLogo2.gif" alt="logo" width="80" height="40" />
                 </Link>
-              </Box> */}
+              </Box>
               <Box display={{ base: "none", md: "block" }}>
                 <InputGroup h="30px">
                   <Input

@@ -24,11 +24,11 @@ const signin = async (req: any, res: any) => {
     );
 
     if (!user) {
-      res.status(404).json({ success: false, data: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     } else if (!validPassword) {
-      res
+      return res
         .status(404)
-        .json({ success: false, data: "Incorrect Password" });
+        .json({ success: false, message: "Incorrect Password" });
     } else {
       // const data = { name: user.name, email: user.email, password: user.password }
 
@@ -40,7 +40,7 @@ const signin = async (req: any, res: any) => {
     }
   } catch (err) {
     if (user == null) {
-      return res.status(404).json({ success: false, data: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
     res.status(404).json({ success: false, data: { msg: 'Error signing in', err: err } });
   }

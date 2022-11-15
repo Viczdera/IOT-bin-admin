@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,10 @@ import {
   IconButton,
   //Image,
   Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
   useMediaQuery,
 } from "@chakra-ui/react";
 
@@ -18,6 +22,8 @@ import {
   MdOutlineSpaceDashboard,
   MdOutlineInventory2,
   MdBookmarkAdd,
+  MdOutlineSupervisedUserCircle,
+  MdSettingsInputComposite,
 } from "react-icons/md";
 import { BsDisplayFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { VscTag } from "react-icons/vsc";
@@ -26,6 +32,9 @@ import Router from "next/router";
 import axios from "axios";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { DataValueContext } from "../../context/authContext";
 function SideNav() {
   const [sideNavSize, setSideNavSize] = useState("large");
   const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
@@ -46,13 +55,10 @@ function SideNav() {
   const boxShadow1 = " rgba(0, 0, 0, 0.18) 0px 2px 4px";
   const boxShadow2 = "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px";
   const boxShadow3 = "rgba(0, 0, 0, 0.04) 0px 3px 5px";
-  const logOut = async () => {
-    const res = await axios.get("/api/auth/signout");
-    let d = res?.data;
-    if (d.success) {
-      Router.push("/login");
-    }
-  };
+  const {state,dispatch}=useContext(DataValueContext)
+  const logOut=()=>{
+    dispatch({ type: "LOGOUT", payload: ''});
+  }
   return (
     <Flex
       top={0}
@@ -61,12 +67,14 @@ function SideNav() {
       zIndex={1000}
       minH="100vh"
       h="100vh"
-    //  / boxShadow={boxShadow3}
+      //  / boxShadow={boxShadow3}
     >
       <Flex
         display={{ base: "none", sm: "flex" }}
         overflowY="auto"
+        overflowX='hidden'
         className="customScrollBar"
+        background="grey.300"
       >
         <motion.div
           style={{
@@ -83,6 +91,11 @@ function SideNav() {
           //  transition={{ duration: 0.8}}
           // transition={{ duration: 0.8, type:'tween'}}
         >
+          <Flex justifyContent="center">
+            <Link href="/" passHref>
+              <Image src="/shopLogo.gif" alt="logo" width="80" height="40" />
+            </Link>
+          </Flex>
           <Flex
             pl={sideNavSize == "large" ? "5" : ""}
             flexDir="column"
@@ -125,18 +138,8 @@ function SideNav() {
               /> */}
             </Menu>
           </Flex>
-          <Flex
-            p="5%"
-            flexDir="column"
-            w="100%"
-            alignItems="flex-start"
-            // position="absolute"
-            // bottom="40px"
-            // left="0"
-            mb={4}
-          >
-            <Divider my={10} />
-            <Flex  width="100%">
+          <Box w="100%" mb={4}>
+            <Flex width="100%" py="20px">
               <Button
                 margin="0 auto"
                 backgroundColor="white.100"
@@ -158,7 +161,57 @@ function SideNav() {
                 )}
               </Button>
             </Flex>
-          </Flex>
+            <Divider />
+            <Box width="100%" py="20px">
+              <Flex
+                flexDir="row"
+                padding="5%"
+                pl={sideNavSize == "small" ? "0" : "7"}
+                justifyContent={
+                  sideNavSize == "small" ? "center" : "flex-start"
+                }
+                alignItems="center"
+              >
+                <Icon
+                  as={MdSettingsInputComposite}
+                  mr={sideNavSize == "small" ? "0" : "5px"}
+                />
+                {sideNavSize == "small" ? (
+                  ""
+                ) : (
+                  <Text color="grey.400" fontWeight="700">
+                    Settings
+                  </Text>
+                )}
+              </Flex>
+              <Menu >
+                <MenuButton p={0}>
+                  <Flex mt="10px" pl="7" alignItems="center">
+                    <Icon
+                      mr="5px"
+                      fontSize="35px"
+                      as={MdOutlineSupervisedUserCircle}
+                    />
+                    <Box
+                      mr="5px"
+                      textAlign='left'
+                      display={sideNavSize == "small" ? "none" : "block"}
+                    >
+                      <Text>Name</Text>
+                      <Text>@gmail.com</Text>
+                    </Box>
+                    <Icon
+                      mr="5px"
+                      as={BiChevronUp}
+                    />
+                  </Flex>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={logOut}>Log out</MenuItem>
+                </MenuList>
+              </Menu>
+            </Box>
+          </Box>
         </motion.div>
       </Flex>
     </Flex>

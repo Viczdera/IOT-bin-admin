@@ -17,16 +17,16 @@ import { motion } from "framer-motion";
 const queryClient = new QueryClient();
 function MyApp({ Component, pageProps, router }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}  >
       <DataValueProvider>
         <ChakraProvider theme={appTheme}>
           <Head>
             <title>Shop Admin Demo</title>
             <meta name="description" content="Shop admin demo application" />
-            <link rel="icon" href="/Primeries-icon-bg-black.svg" />
+            <link rel="icon" href="/shopLogo2.gif" />
           </Head>
 
-          <NextNProgress height={2} color="#000" />
+          <NextNProgress height={2} color="var(--blue200)" />
           <motion.div
             key={router.route}
             initial="initial"

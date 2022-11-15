@@ -136,7 +136,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "var(--blue100)",
+    background: "var(--blue200)",
     width: " 42px",
     height: " 42px",
     borderRadius: "50%",

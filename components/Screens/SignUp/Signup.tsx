@@ -9,9 +9,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import { AiFillShop } from "react-icons/ai";
 import FormHandler from "./FormHandler";
 import Stepper from "./Stepper";
+import { CiShop } from "react-icons/ci";
 function SignUp() {
   const boxShadow =
     " rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px";
@@ -19,18 +19,18 @@ function SignUp() {
   const [step, setStep] = React.useState(1);
 
   const next = () => {
-    window.scrollTo(0, 10);
+    window.scrollTo(0, 110);
     setStep(step + 1);
   };
   const back = () => {
-    window.scrollTo(0, 10);
+    window.scrollTo(0, 110);
     setStep(step - 1);
   };
   const pageSteps: string[] = ["User Info","Security"];
   return (
-    <Box w="100%" mt="40px">
+    <Box w="100%" >
       <Box mb="30px">
-        <Icon as={AiFillShop} style={styles.icon} />
+        <Icon as={CiShop} style={styles.icon} />
         <Text fontWeight="bold" fontSize="xl" textAlign="center" my="10px">
           SignUp
         </Text>
@@ -63,7 +63,7 @@ minHeight:'350px',
     fontSize: "50px",
     display: "block",
     margin: "0 auto",
-    marginBottom: "10px",
+    color:'var(--blue200)',
   },
   label: {
     fontSize: "14px",

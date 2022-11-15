@@ -66,7 +66,7 @@ export const ShopInfoForm: React.FC<ShopInfoProps> = ({
         <Form>
           <Box position="relative">
             <Alert status="info" mb="5px" fontSize="12px">
-              <AlertIcon />
+              <AlertIcon color='blue.200' />
               Some Message for those signing up !
             </Alert>
             <span style={styles.span}>Manage your shop account</span>
@@ -347,11 +347,11 @@ const styles = {
     },
   },
   button: {
-    backgroundColor: "#0e0d0d",
+    backgroundColor: "var(--blue200)",
     color: "#fff",
     active: {},
     focus: {
-      border: "2px solid #000",
+      border: "2px solid var(--blue200)",
       background: "#000",
     },
     hover: {
