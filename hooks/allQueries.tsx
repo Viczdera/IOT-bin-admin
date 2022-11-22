@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useRouter } from "next/router";
 import { useToast } from "@chakra-ui/react";
 import { useContext } from "react";
 import { DataValueContext } from "../context/authContext";
@@ -23,7 +22,8 @@ export const headers2 = (access_token?: string) => {
   };
 };
 
-export const useGetRequest = (endpoint: string,queryName:string, access_token?: string) => {
+export const useGetRequest = (endpoint: string,queryName:string, access_token?: string,invalidate?:string) => {
+  const queryClient=useQueryClient()
   const Toast = useToast();
   const headers = {
     "Content-Type": "application/json",
@@ -57,15 +57,9 @@ export const useGetRequest = (endpoint: string,queryName:string, access_token?: 
       let e = response?.error;
       let d = response?.data;
       if (s == 200 || s == 201) {
-        Toast({
-          position: "top-right",
-          title: "Success.",
-          description: d?.message,
-          status: "success",
-          duration: 1500,
-          isClosable: true,
-        });
-        // queryClient.invalidateQueries("all_linked_devices");
+        queryClient.invalidateQueries(invalidate||"");
+        return d
+      
       } else {
         Toast({
           position: "top-right",
@@ -95,11 +89,12 @@ export const useGetRequest = (endpoint: string,queryName:string, access_token?: 
 export const usePostRequest = (
   json: boolean = true,
   endpoint: string,
+  invalidate?:string,
   access_token?: string
 ) => {
   const Toast = useToast();
   const { state, dispatch } = useContext(DataValueContext);
-
+const queryClient=useQueryClient()
   const createRequest = async (formData: any) => {
     try {
       const res = await axios.post(`${endpoint}`, formData, {
@@ -132,6 +127,7 @@ export const usePostRequest = (
       let e = response?.error;
       let d = response?.data;
       if (s == 200 || s == 201) {
+
         Toast({
           position: "top-right",
           title: "Success.",
@@ -140,7 +136,7 @@ export const usePostRequest = (
           duration: 1500,
           isClosable: true,
         });
-        // queryClient.invalidateQueries("all_linked_devices");
+       queryClient.invalidateQueries(invalidate||"");
       } else {
         Toast({
           position: "top-right",

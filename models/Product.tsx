@@ -50,7 +50,7 @@ const ProductSchema = new Schema<IProduct>(
       default: [{ name: "Title", values: ["Default Title"] }],
     },
     images: {
-      type: [String],
+      type: [Object],
     },
     image: {
       type: String,

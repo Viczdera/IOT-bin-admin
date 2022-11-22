@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const mongoDbUrl: string = process.env.MONGODB_URL!;
 const connectDB = () => {
-  if (mongoose.connections[0].readyState) {
+  if (mongoose?.connections[0].readyState) {
     console.log("Database connected");
     return;
   }

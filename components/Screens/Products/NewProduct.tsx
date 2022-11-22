@@ -188,10 +188,10 @@ const NewProduct = (props: any) => {
       .min(1, "Quantity must be at least one")
       .typeError("Quantity must be a number")
       .required("Provide quantity"),
-    // images: yup
-    //   .array()
-    //   .min(1, "A product image is required")
-    //   .required("Product image is required"),
+    images: yup
+      .array()
+      .min(1, "A product image is required")
+      .required("Product image is required"),
   });
 
   const prices: {
@@ -214,7 +214,8 @@ const NewProduct = (props: any) => {
   //console.log(accessToken)
   const { createPost, isLoading, isSuccess, data } = usePostRequest(
     true,
-    "/api/products/products",
+    "/api/products",
+    'allProducts'
   );
   if (data?.status == 200 || 201) {
     console.log(data);
@@ -638,16 +639,16 @@ const NewProduct = (props: any) => {
               </Box>
               <Box style={styles.cardCont} mt={{ base: "20px", md: "30px" }}>
                 <FormControl
-                 // isInvalid={props.errors.images && props.touched.images}
+                 isInvalid={props.errors.images && props.touched.images}
                 >
                   <UploadImage
                     setFieldValue={props.setFieldValue}
                     uploadSuccess={isSuccess}
                   />
 
-                  {/* <FormErrorMessage px={{ base: "10px", md: "20px" }} pb="10px">
+                  <FormErrorMessage px={{ base: "10px", md: "20px" }} pb="10px">
                     {props.errors.images}
-                  </FormErrorMessage> */}
+                  </FormErrorMessage>
                 </FormControl>
               </Box>
 

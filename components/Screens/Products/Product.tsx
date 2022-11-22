@@ -35,7 +35,7 @@ import { MdOutlineDeleteSweep } from "react-icons/md";
 import { Field, Form, Formik } from "formik";
 import { FileUploader } from "react-drag-drop-files";
 import UploadImage from "./components/UploadImage";
-import { InputNumber, Select } from "antd";
+import { Col, InputNumber, Row, Select } from "antd";
 import OptionsForm from "./components/OptionsForm";
 import EditOptions from "./components/EditOptions";
 import { useMutation, useQueryClient } from "react-query";
@@ -55,6 +55,7 @@ import { useGetRequest } from "../../../hooks/allQueries";
 
 const Product = (props: { id: any }) => {
   const [product, setProduct] = React.useState<any>([]);
+  const [edit, setEdit] = React.useState<boolean>(false);
   const [status, setStatus] = React.useState("");
   const [showVariant, setShowVariant] = useState(true);
   const [options, setOptions] = useState(false);
@@ -69,9 +70,9 @@ const Product = (props: { id: any }) => {
   useEffect(() => {
     if (data?.status == 200) {
       let d = data?.data?.data;
-      let optionL=Object.keys(d?.options).length
-      console.log(optionL)
-      if (optionL> 0) {
+      let optionL = Object.keys(d?.options).length;
+      console.log(optionL);
+      if (optionL > 0) {
         setOptions(true);
       }
       setProduct(d);
@@ -100,530 +101,598 @@ const Product = (props: { id: any }) => {
     });
   };
   useEffect(() => setCurrency(userCurrency), [userCurrency]);
-  const toInt=(number:string)=>{
-    return parseFloat(number)
-  }
+  const toInt = (number: string) => {
+    return parseFloat(number);
+  };
   return (
     <>
-    
-    {isSuccess?<>
-      <Box mt="20px" minH="100vh">
-        <Formik
-          initialValues={product}
-          validationSchema={""}
-          onSubmit={() => {}}
-        >
-          {(props: {
-            setFieldValue: any;
-            values: any;
-            errors: any;
-            setFieldTouched: any;
-            touched: any;
-          }) => (
-
-            <Form>
-              <Flex flexDir={{ base: "column", lg: "row" }} alignItems="center">
-                <Box w={{ base: "100%", lg: "60%" }}>
-                 
-                  <Box style={styles.cardCont}>
-                    <FormControl
-                      //isInvalid={props.errors.title && props.touched.title}
-                      padding={{ base: "10px", md: "20px" }}
+      {isSuccess ? (
+        <>
+          <Box mt="20px" minH="100vh">
+            <Formik
+              initialValues={product}
+              validationSchema={""}
+              onSubmit={() => {}}
+            >
+              {(props: {
+                setFieldValue: any;
+                values: any;
+                errors: any;
+                setFieldTouched: any;
+                touched: any;
+              }) => {
+                if (!edit) {
+                  props.values = product;
+                }
+                return (
+                  <Form>
+                    <Flex
+                      flexDir={{ base: "column", lg: "row" }}
+                      alignItems="center"
                     >
-                      <FormLabel htmlFor="title" style={styles.title}>
-                        Title
-                      </FormLabel>
-                      <Input
-                        disabled
-                        name="title"
-                        placeholder="title"
-                        value={product.title}
-                        isDisabled
-                        h="40px"
-                        type="text"
-                        onChange={(e) => {
-                          props.setFieldValue("title", e.target.value);
-                        }}
-                      />
-
-                      {/* <FormErrorMessage mt="10px">
-                        {props.errors.title}
-                      </FormErrorMessage> */}
-                    </FormControl>
-
-                    <FormControl
-                      //   isInvalid={
-                      //     props.errors.description && props.touched.description
-                      //   }
-                      px={{ base: "10px", md: "20px" }}
-                      pb={{ base: "10px", md: "20px" }}
-                      mt="9px"
-                    >
-                      <FormLabel htmlFor="description" style={styles.title}>
-                        Description
-                      </FormLabel>
-                      <Textarea
-                        name="description"
-                        value={product.description}
-                        placeholder="product detail"
-                        h="40px"
-                        resize="none"
-                        minH="150px"
-                        isDisabled
-                        // onChange={(e) => {
-                        //   props.setFieldValue("description", e.target.value);
-                        // }}
-                      />
-
-                      {/* <FormErrorMessage>
-                        {props.errors.description}
-                      </FormErrorMessage> */}
-                      <Box>
-                        <Text
-                          borderBottom="2px solid black"
-                          w="max-content"
-                          mt="15px"
-                          mb="10px"
-                        >
-                          Note{" "}
-                        </Text>{" "}
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Ut libero aspernatur provident ratione sit? Cum
-                        temporibus aut quisquam culpa perspiciatis voluptas.
-                      </Box>
-                    </FormControl>
-                  </Box>
-                </Box>
-
-                <Box
-                  w={{ base: "100%", lg: "40%" }}
-                  ml={{ base: "0px", lg: "30px" }}
-                  my={{ base: "20px", md: "0px" }}
-                >
-                  <Box style={styles.cardCont}>
-                    <FormControl
-                      // isInvalid={props.errors.status && props.touched.status}
-                      padding={{ base: "10px", md: "20px" }}
-                    >
-                      <FormLabel htmlFor="status" style={styles.title}>
-                        Product Status
-                      </FormLabel>
-                      <Select
-                        defaultValue={product?.status}
-                        style={{ width: "100%" }}
-                        onChange={(value: string) => {
-                          props.setFieldValue("status", value);
-                        }}
-                        disabled
-                      >
-                        <Option value="active">Active</Option>
-                        <Option value="draft">Draft</Option>
-                      </Select>
-
-                      {/* <FormErrorMessage mt="10px">
-                        {props.errors.status}
-                      </FormErrorMessage> */}
-                    </FormControl>
-                  </Box>
-
-                  <Box
-                    style={styles.cardCont}
-                    mt={{ base: "20px", md: "30px" }}
-                  >
-                    <Box py={{ base: "10px", md: "20px" }}>
-                      <Text
-                        px={{ base: "10px", md: "20px" }}
-                        style={styles.title}
-                      >
-                        Inventory
-                      </Text>
-                      <Divider orientation="horizontal" my="20px" />
-                      <Flex
-                        px={{ base: "10px", md: "20px" }}
-                        flexDir={{ base: "column", sm: "row" }}
-                      >
-                        <FormControl
-                          // isInvalid={props.errors.sku && props.touched.sku}
-                          mr="20px"
-                        >
-                          <FormLabel htmlFor="sku" fontSize="14px">
-                            SKU <p> (Stock Keeping Unit)</p>
-                          </FormLabel>
-                          <Input
-                            disabled
-                            name="sku"
-                            min={1}
-                            placeholder="sku"
-                            value={product.sku}
-                            h="40px"
-                            onChange={(e) => {
-                              props.setFieldValue("sku", e.target.value);
-                            }}
-                          />
-
-                          {/* <FormErrorMessage mt="10px">
-                            {props.errors.sku}
-                          </FormErrorMessage> */}
-                        </FormControl>
-                      </Flex>
-
-                      <Box px={{ base: "10px", md: "20px" }} mt="20px">
-                        <FormControl
-                        //   isInvalid={
-                        //     props.errors.quantity && props.touched.quantity
-                        //   }
-                        >
-                          <FormLabel htmlFor="quantity" fontSize="14px">
-                            Quantity
-                          </FormLabel>
-                          <NumberInput
-                            isDisabled
-                            value={product.quantity}
-                            name="quantity"
-                            width="100%"
-                            height="40px"
-                            min={1}
-                            max={5000}
-                            clampValueOnBlur={true}
-                            // onChange={(value: any) => {
-                            //   props.setFieldValue("quantity", value);
-                            // }}
+                      <Box w={{ base: "100%", lg: "60%" }}>
+                        <Box style={styles.cardCont}>
+                          <FormControl
+                            //isInvalid={props.errors.title && props.touched.title}
+                            padding={{ base: "10px", md: "20px" }}
                           >
-                            <NumberInputField
-                              _focus={{ border: "2px solid var(--black100)" }}
+                            <FormLabel htmlFor="title" style={styles.title}>
+                              Title
+                            </FormLabel>
+                            <Input
+                              disabled
+                              name="title"
+                              placeholder="title"
+                              value={props.values.title}
+                              isDisabled
+                              h="40px"
+                              type="text"
+                              onChange={(e) => {
+                                props.setFieldValue("title", e.target.value);
+                              }}
                             />
-                            <NumberInputStepper height="38px" top="0px">
-                              <NumberIncrementStepper
-                                border="unset"
-                                _active={{ background: "var(--grey100)" }}
-                              />
-                              <NumberDecrementStepper
-                                border="unset"
-                                _active={{ background: "var(--grey100)" }}
-                              />
-                            </NumberInputStepper>
-                          </NumberInput>
 
-                          {/* <FormErrorMessage mt="10px">
-                            {props.errors.quantity}
-                          </FormErrorMessage> */}
-                        </FormControl>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Flex>
-              <Box style={styles.cardCont} mt={{ base: "20px", md: "30px" }}>
-                <Box py={{ base: "10px", md: "20px" }}>
-                  <Flex alignItems="center">
-                    <Text
-                      px={{ base: "10px", md: "20px" }}
-                      style={styles.title}
-                    >
-                      Pricing
-                    </Text>
-                    <Select
-                      // disabled
-                      style={{ width: "80px" }}
-                      value={currency}
-                      onChange={handleCurrencyChange}
-                      options={[
-                        {
-                          value: "NGN",
-                          label: "NGN",
-                        },
-                        {
-                          value: "USD",
-                          label: "USD",
-                        },
-                      ]}
-                    />
-                  </Flex>
-                  <Divider orientation="horizontal" my="20px" />
-                  <Flex
-                    px={{ base: "10px", md: "20px" }}
-                    flexDir={{ base: "column", sm: "row" }}
-                  >
-                    <FormControl
-                      //   isInvalid={
-                      //     currency == "NGN"
-                      //       ? props.errors.price?.ngn && props.touched.price?.ngn
-                      //       : props.errors.price?.usd && props.touched.price?.usd
-                      //   }
-                      mr="20px"
-                    >
-                      <FormLabel htmlFor="price" fontSize="14px">
-                        Price
-                      </FormLabel>
-                      <Box style={styles.inputBox}>
-                        <Flex alignItems="center">
-                          {/* <Icon
-                          as={
-                            currency == "NGN"
-                              ? TbCurrencyNaira
-                              : TbCurrencyDollar
-                          }
-                          fontSize="18px"
-                        /> */}
-                          <Input
-                            disabled
-                            name="price"
-                            border="none"
-                            min={0}
-                            padding="2px"
-                            h="30px"
-                            fontSize="18px"
-                            fontWeight="bold"
-                            // ref={price}
-                            placeholder="0"
-                            value={
-                              currency == "NGN"
-                                ? product.price?.ngn||0
-                                : product.price?.usd||0
-                            }
-                          />
-                        </Flex>
-                        <Flex
-                          mt="5px"
-                          alignItems="center"
-                          fontSize="12px"
-                          color="grey"
-                        >
-                          <Icon
-                            as={
-                              currency == "NGN"
-                                ? TbCurrencyDollar
-                                : TbCurrencyNaira
-                            }
-                          />
-                          <Text>
-                            {currency == "NGN"
-                              ? formatterUsd.format(product?.price?.usd||0)
-                              : formatter.format(product?.price?.ngn||0)}
-                          </Text>
-                        </Flex>
-                      </Box>
-                    </FormControl>
+                            {/* <FormErrorMessage mt="10px">
+                          {props.errors.title}
+                        </FormErrorMessage> */}
+                          </FormControl>
 
-                    <FormControl mr="20px">
-                      <FormLabel htmlFor="priceDiscounted" fontSize="14px">
-                        Price Discounted
-                      </FormLabel>
-                      <Box style={styles.inputBox}>
-                        <Flex alignItems="center">
-                          <Input
-                            disabled
-                            name="priceDiscounted"
-                            border="none"
-                            min={0}
-                            padding="2px"
-                            h="30px"
-                            fontSize="18px"
-                            fontWeight="bold"
-                            placeholder="0"
-                            value={
-                              currency == "NGN"
-                                ? product.priceDiscounted?.ngn||0
-                                : product.priceDiscounted?.usd||0
-                            }
-                          />
-                        </Flex>
-                        <Flex
-                          mt="5px"
-                          alignItems="center"
-                          fontSize="12px"
-                          color="grey"
-                        >
-                          <Icon
-                            as={
-                              currency == "NGN"
-                                ? TbCurrencyDollar
-                                : TbCurrencyNaira
-                            }
-                          />
-                          <Text>
-                            {currency == "NGN"
-                              ? formatterUsd.format(
-                                  product.priceDiscounted?.usd||0
-                                )
-                              : formatter.format(
-                                  product.priceDiscounted?.ngn||0
-                                )}
-                          </Text>
-                        </Flex>
-                      </Box>
-                    </FormControl>
-                  </Flex>
-                </Box>
-              </Box>
-              <Box style={styles.cardCont} mt={{ base: "20px", md: "30px" }}>
-                <FormControl
-                // isInvalid={props.errors.images && props.touched.images}
-                >
-                  <UploadImage
-                    setFieldValue={props.setFieldValue}
-                    uploadSuccess={isSuccess}
-                  />
-
-                  {/* <FormErrorMessage px={{ base: "10px", md: "20px" }} pb="10px">
-                  {props.errors.images}
-                </FormErrorMessage> */}
-                </FormControl>
-              </Box>
-
-              <Box>
-                <Box style={styles.cardCont} mt={{ base: "20px", md: "30px" }}>
-                  <FormControl>
-                    <FormLabel
-                      htmlFor="title"
-                      style={styles.title}
-                      p={{ base: "10px", md: "20px" }}
-                    >
-                      Options
-                    </FormLabel>
-                    <Box>
-                      <Flex
-                        px={{ base: "10px", md: "20px" }}
-                        pb={options ? "0px" : "30px"}
-                      >
-                        <Switch
-                          mr="10px"
-                          isChecked={options}
-                          //   onChange={() => {
-                          //     onChangeCheck();
-                          //   }}
-                        />
-                        <Text>
-                          This product has options, like size or color
-                        </Text>
-                      </Flex>
-                      {options ? (
-                        <Box>
-                          <Divider orientation="horizontal" my="20px" />
-                          <Flex
+                          <FormControl
+                            //   isInvalid={
+                            //     props.errors.description && props.touched.description
+                            //   }
                             px={{ base: "10px", md: "20px" }}
                             pb={{ base: "10px", md: "20px" }}
-                            //  flexDir={{ base: "column", lg: "row" }}
-                            flexWrap="wrap"
+                            mt="9px"
                           >
-                            {!options ? (
-                              ""
-                            ) : (
-                              <Flex
-                                flexDir={{ base: "column", lg: "row" }}
-                                flexWrap="wrap"
-                                w="100%"
+                            <FormLabel
+                              htmlFor="description"
+                              style={styles.title}
+                            >
+                              Description
+                            </FormLabel>
+                            <Textarea
+                              name="description"
+                              value={props.values.description}
+                              placeholder="product detail"
+                              h="40px"
+                              resize="none"
+                              minH="150px"
+                              isDisabled
+                              // onChange={(e) => {
+                              //   props.setFieldValue("description", e.target.value);
+                              // }}
+                            />
+
+                            {/* <FormErrorMessage>
+                          {props.errors.description}
+                        </FormErrorMessage> */}
+                            <Box>
+                              <Text
+                                borderBottom="2px solid black"
+                                w="max-content"
+                                mt="15px"
+                                mb="10px"
                               >
-                                {product.options?.map((m: any, i: number) => (
+                                Note{" "}
+                              </Text>{" "}
+                              Lorem ipsum dolor sit amet consectetur adipisicing
+                              elit. Ut libero aspernatur provident ratione sit?
+                              Cum temporibus aut quisquam culpa perspiciatis
+                              voluptas.
+                            </Box>
+                          </FormControl>
+                        </Box>
+                      </Box>
+
+                      <Box
+                        w={{ base: "100%", lg: "40%" }}
+                        ml={{ base: "0px", lg: "30px" }}
+                        my={{ base: "20px", md: "0px" }}
+                      >
+                        <Box style={styles.cardCont}>
+                          <FormControl
+                            // isInvalid={props.errors.status && props.touched.status}
+                            padding={{ base: "10px", md: "20px" }}
+                          >
+                            <FormLabel htmlFor="status" style={styles.title}>
+                              Product Status
+                            </FormLabel>
+                            <Select
+                              defaultValue={product?.status}
+                              style={{ width: "100%" }}
+                              onChange={(value: string) => {
+                                props.setFieldValue("status", value);
+                              }}
+                              disabled
+                            >
+                              <Option value="active">Active</Option>
+                              <Option value="draft">Draft</Option>
+                            </Select>
+
+                            {/* <FormErrorMessage mt="10px">
+                          {props.errors.status}
+                        </FormErrorMessage> */}
+                          </FormControl>
+                        </Box>
+
+                        <Box
+                          style={styles.cardCont}
+                          mt={{ base: "20px", md: "30px" }}
+                        >
+                          <Box py={{ base: "10px", md: "20px" }}>
+                            <Text
+                              px={{ base: "10px", md: "20px" }}
+                              style={styles.title}
+                            >
+                              Inventory
+                            </Text>
+                            <Divider orientation="horizontal" my="20px" />
+                            <Flex
+                              px={{ base: "10px", md: "20px" }}
+                              flexDir={{ base: "column", sm: "row" }}
+                            >
+                              <FormControl
+                                // isInvalid={props.errors.sku && props.touched.sku}
+                                mr="20px"
+                              >
+                                <FormLabel htmlFor="sku" fontSize="14px">
+                                  SKU <p> (Stock Keeping Unit)</p>
+                                </FormLabel>
+                                <Input
+                                  disabled
+                                  name="sku"
+                                  min={1}
+                                  placeholder="sku"
+                                  value={props.values.sku}
+                                  h="40px"
+                                  onChange={(e) => {
+                                    props.setFieldValue("sku", e.target.value);
+                                  }}
+                                />
+
+                                {/* <FormErrorMessage mt="10px">
+                              {props.errors.sku}
+                            </FormErrorMessage> */}
+                              </FormControl>
+                            </Flex>
+
+                            <Box px={{ base: "10px", md: "20px" }} mt="20px">
+                              <FormControl
+                              //   isInvalid={
+                              //     props.errors.quantity && props.touched.quantity
+                              //   }
+                              >
+                                <FormLabel htmlFor="quantity" fontSize="14px">
+                                  Quantity
+                                </FormLabel>
+                                <NumberInput
+                                  isDisabled
+                                  value={props.values.quantity}
+                                  name="quantity"
+                                  width="100%"
+                                  height="40px"
+                                  min={1}
+                                  max={5000}
+                                  clampValueOnBlur={true}
+                                  // onChange={(value: any) => {
+                                  //   props.setFieldValue("quantity", value);
+                                  // }}
+                                >
+                                  <NumberInputField
+                                    _focus={{
+                                      border: "2px solid var(--black100)",
+                                    }}
+                                  />
+                                  <NumberInputStepper height="38px" top="0px">
+                                    <NumberIncrementStepper
+                                      border="unset"
+                                      _active={{ background: "var(--grey100)" }}
+                                    />
+                                    <NumberDecrementStepper
+                                      border="unset"
+                                      _active={{ background: "var(--grey100)" }}
+                                    />
+                                  </NumberInputStepper>
+                                </NumberInput>
+
+                                {/* <FormErrorMessage mt="10px">
+                              {props.errors.quantity}
+                            </FormErrorMessage> */}
+                              </FormControl>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Flex>
+                    <Box
+                      style={styles.cardCont}
+                      mt={{ base: "20px", md: "30px" }}
+                    >
+                      <Box py={{ base: "10px", md: "20px" }}>
+                        <Flex alignItems="center">
+                          <Text
+                            px={{ base: "10px", md: "20px" }}
+                            style={styles.title}
+                          >
+                            Pricing
+                          </Text>
+                          <Select
+                            // disabled
+                            style={{ width: "80px" }}
+                            value={currency}
+                            onChange={handleCurrencyChange}
+                            options={[
+                              {
+                                value: "NGN",
+                                label: "NGN",
+                              },
+                              {
+                                value: "USD",
+                                label: "USD",
+                              },
+                            ]}
+                          />
+                        </Flex>
+                        <Divider orientation="horizontal" my="20px" />
+                        <Flex
+                          px={{ base: "10px", md: "20px" }}
+                          flexDir={{ base: "column", sm: "row" }}
+                        >
+                          <FormControl
+                            //   isInvalid={
+                            //     currency == "NGN"
+                            //       ? props.errors.price?.ngn && props.touched.price?.ngn
+                            //       : props.errors.price?.usd && props.touched.price?.usd
+                            //   }
+                            mr="20px"
+                          >
+                            <FormLabel htmlFor="price" fontSize="14px">
+                              Price
+                            </FormLabel>
+                            <Box style={styles.inputBox}>
+                              <Flex alignItems="center">
+                                {/* <Icon
+                            as={
+                              currency == "NGN"
+                                ? TbCurrencyNaira
+                                : TbCurrencyDollar
+                            }
+                            fontSize="18px"
+                          /> */}
+                                <Input
+                                  disabled
+                                  name="price"
+                                  border="none"
+                                  min={0}
+                                  padding="2px"
+                                  h="30px"
+                                  fontSize="18px"
+                                  fontWeight="bold"
+                                  // ref={price}
+                                  placeholder="0"
+                                  value={
+                                    currency == "NGN"
+                                      ? props.values.price?.ngn || 0
+                                      : props.values.price?.usd || 0
+                                  }
+                                />
+                              </Flex>
+                              <Flex
+                                mt="5px"
+                                alignItems="center"
+                                fontSize="12px"
+                                color="grey"
+                              >
+                                <Icon
+                                  as={
+                                    currency == "NGN"
+                                      ? TbCurrencyDollar
+                                      : TbCurrencyNaira
+                                  }
+                                />
+                                <Text>
+                                  {currency == "NGN"
+                                    ? formatterUsd.format(
+                                        product?.price?.usd || 0
+                                      )
+                                    : formatter.format(
+                                        product?.price?.ngn || 0
+                                      )}
+                                </Text>
+                              </Flex>
+                            </Box>
+                          </FormControl>
+
+                          <FormControl mr="20px">
+                            <FormLabel
+                              htmlFor="priceDiscounted"
+                              fontSize="14px"
+                            >
+                              Price Discounted
+                            </FormLabel>
+                            <Box style={styles.inputBox}>
+                              <Flex alignItems="center">
+                                <Input
+                                  disabled
+                                  name="priceDiscounted"
+                                  border="none"
+                                  min={0}
+                                  padding="2px"
+                                  h="30px"
+                                  fontSize="18px"
+                                  fontWeight="bold"
+                                  placeholder="0"
+                                  value={
+                                    currency == "NGN"
+                                      ? props.values.priceDiscounted?.ngn || 0
+                                      : props.values.priceDiscounted?.usd || 0
+                                  }
+                                />
+                              </Flex>
+                              <Flex
+                                mt="5px"
+                                alignItems="center"
+                                fontSize="12px"
+                                color="grey"
+                              >
+                                <Icon
+                                  as={
+                                    currency == "NGN"
+                                      ? TbCurrencyDollar
+                                      : TbCurrencyNaira
+                                  }
+                                />
+                                <Text>
+                                  {currency == "NGN"
+                                    ? formatterUsd.format(
+                                        props.values.priceDiscounted?.usd || 0
+                                      )
+                                    : formatter.format(
+                                        props.values.priceDiscounted?.ngn || 0
+                                      )}
+                                </Text>
+                              </Flex>
+                            </Box>
+                          </FormControl>
+                        </Flex>
+                      </Box>
+                    </Box>
+                    <Box
+                      style={styles.cardCont}
+                      mt={{ base: "20px", md: "30px" }}
+                    >
+                      <FormControl p='20px'>
+                        <Box>
+                          <Row justify="start" align="top" gutter={[12, 12]}>
+                            {product?.images?.map((m: any, key: any) => (
+                              <>
+                                <Col span={key == 0 ? 12 : 6} key={key}>
                                   <Box
-                                    width={{ base: "100%", lg: "50%" }}
-                                    key={i}
-                                    border="1px solid var(--grey200)"
-                                    p="10px"
+                                    outline="1px solid #d6d3d3b3"
+                                    borderRadius="8px"
+                                    boxShadow="rgba(0, 0, 0, 0.1) 0px 1px 2px 0px"
+                                    h={{ base: 120, sm: 120, md: 200, lg: 300 }}
                                   >
                                     <Flex
+                                      h="100%"
                                       alignItems="center"
-                                      justifyContent="space-between"
+                                      justifyContent="center"
                                     >
-                                      <Icon as={GrHomeOption} />
-                                      <Box w="100%" mx="20px">
-                                        <Text
-                                          style={styles.title}
-                                          textTransform="capitalize"
-                                        >
-                                          {m.name}
-                                        </Text>
-                                        <Wrap>
-                                          {m.values.map((v: any, i: number) => (
-                                            <Box
-                                              key={i}
-                                              style={styles.valueCont}
-                                            >
-                                              <Text>{v}</Text>
-                                            </Box>
-                                          ))}
-                                        </Wrap>
-                                      </Box>
-                                      {/* <IconButton
-                                        size="sm"
-                                        onClick={() => {
-                                          openEditDrawer(i);
-                                        }}
-                                        aria-label={"edit-option-btn"}
-                                      >
-                                        <TbEdit />
-                                      </IconButton> */}
+                                      <Image
+                                        key={key}
+                                        src={m.src}
+                                        alt="imgs"
+                                        width="auto"
+                                        height="auto"
+                                        maxH="100%"
+                                        maxW="100%"
+                                      />
                                     </Flex>
                                   </Box>
-                                ))}
-                              </Flex>
-                            )}
-                          </Flex>
-                          <Divider orientation="horizontal" my="20px" />
-                          <Flex
-                            px={{ base: "10px", md: "20px" }}
-                            pb={{ base: "10px", md: "20px" }}
-                            cursor="pointer"
-                            _hover={{ color: "blue.600" }}
-                            // onClick={() => {
-                            //   onOpen();
-                            // }}
-                          >
-                            <Icon as={HiViewGridAdd} mr="10px" boxSize="20px" />{" "}
-                            {/* <Text>Add option</Text> */}
-                          </Flex>
+                                </Col>
+                              </>
+                            ))}
+                          </Row>
                         </Box>
-                      ) : (
-                        ""
-                      )}
+                      </FormControl>
                     </Box>
-                  </FormControl>
-                </Box>
-              </Box>
 
-              {options ? (
-                <Box style={styles.cardCont} mt={{ base: "20px", md: "30px" }}>
-                  <FormControl>
-                    <FormLabel
-                      htmlFor="title"
-                      style={styles.title}
-                      pt={{ base: "10px", md: "20px" }}
-                      px={{ base: "10px", md: "20px" }}
-                    >
-                      Variants
-                    </FormLabel>
-                    <Box px={{ base: "10px", md: "20px" }} lineHeight="10px">
-                      Note: *variants are generated from optionsz
+                    <Box>
+                      <Box
+                        style={styles.cardCont}
+                        mt={{ base: "20px", md: "30px" }}
+                      >
+                        <FormControl>
+                          <FormLabel
+                            htmlFor="title"
+                            style={styles.title}
+                            p={{ base: "10px", md: "20px" }}
+                          >
+                            Options
+                          </FormLabel>
+                          <Box>
+                            <Flex
+                              px={{ base: "10px", md: "20px" }}
+                              pb={options ? "0px" : "30px"}
+                            >
+                              <Switch
+                                mr="10px"
+                                isChecked={options}
+                                //   onChange={() => {
+                                //     onChangeCheck();
+                                //   }}
+                              />
+                              <Text>
+                                This product has options, like size or color
+                              </Text>
+                            </Flex>
+                            {options ? (
+                              <Box>
+                                <Divider orientation="horizontal" my="20px" />
+                                <Flex
+                                  px={{ base: "10px", md: "20px" }}
+                                  pb={{ base: "10px", md: "20px" }}
+                                  //  flexDir={{ base: "column", lg: "row" }}
+                                  flexWrap="wrap"
+                                >
+                                  {!options ? (
+                                    ""
+                                  ) : (
+                                    <Flex
+                                      flexDir={{ base: "column", lg: "row" }}
+                                      flexWrap="wrap"
+                                      w="100%"
+                                    >
+                                      {props.values.options?.map(
+                                        (m: any, i: number) => (
+                                          <Box
+                                            width={{ base: "100%", lg: "50%" }}
+                                            key={i}
+                                            border="1px solid var(--grey200)"
+                                            p="10px"
+                                          >
+                                            <Flex
+                                              alignItems="center"
+                                              justifyContent="space-between"
+                                            >
+                                              <Icon as={GrHomeOption} />
+                                              <Box w="100%" mx="20px">
+                                                <Text
+                                                  style={styles.title}
+                                                  textTransform="capitalize"
+                                                >
+                                                  {m.name}
+                                                </Text>
+                                                <Wrap>
+                                                  {m.values.map(
+                                                    (v: any, i: number) => (
+                                                      <Box
+                                                        key={i}
+                                                        style={styles.valueCont}
+                                                      >
+                                                        <Text>{v}</Text>
+                                                      </Box>
+                                                    )
+                                                  )}
+                                                </Wrap>
+                                              </Box>
+                                              {/* <IconButton
+                                          size="sm"
+                                          onClick={() => {
+                                            openEditDrawer(i);
+                                          }}
+                                          aria-label={"edit-option-btn"}
+                                        >
+                                          <TbEdit />
+                                        </IconButton> */}
+                                            </Flex>
+                                          </Box>
+                                        )
+                                      )}
+                                    </Flex>
+                                  )}
+                                </Flex>
+                                <Divider orientation="horizontal" my="20px" />
+                                <Flex
+                                  px={{ base: "10px", md: "20px" }}
+                                  pb={{ base: "10px", md: "20px" }}
+                                  cursor="pointer"
+                                  _hover={{ color: "blue.600" }}
+                                  // onClick={() => {
+                                  //   onOpen();
+                                  // }}
+                                >
+                                  <Icon
+                                    as={HiViewGridAdd}
+                                    mr="10px"
+                                    boxSize="20px"
+                                  />{" "}
+                                  {/* <Text>Add option</Text> */}
+                                </Flex>
+                              </Box>
+                            ) : (
+                              ""
+                            )}
+                          </Box>
+                        </FormControl>
+                      </Box>
                     </Box>
-                    <OptionsVariants
-                      rate={rate}
-                      variants={product?.variants}
-                      setFieldValue={props.setFieldValue}
-                      currency={currency}
-                      showVariant={showVariant}
-                      options={options}
-                      images={product?.images}
-                    />
-                  </FormControl>
-                </Box>
-              ) : (
-                ""
-              )}
-              {/* <Button
-              type="submit"
-              mt="20px"
-              backgroundColor="black.100"
-              color="white"
-              width="100%"
-              isLoading={isLoading}
-            >
-              Add Product
-            </Button> */}
-            </Form>
-          )}
-        </Formik>
-      </Box>
-    </>:"Error"}
+
+                    {options ? (
+                      <Box
+                        style={styles.cardCont}
+                        mt={{ base: "20px", md: "30px" }}
+                      >
+                        <FormControl>
+                          <FormLabel
+                            htmlFor="title"
+                            style={styles.title}
+                            pt={{ base: "10px", md: "20px" }}
+                            px={{ base: "10px", md: "20px" }}
+                          >
+                            Variants
+                          </FormLabel>
+                          <Box
+                            px={{ base: "10px", md: "20px" }}
+                            lineHeight="10px"
+                          >
+                            Note: *variants are generated from optionsz
+                          </Box>
+                          <OptionsVariants
+                          disabled={true}
+                            rate={rate}
+                            variants={product?.variants}
+                            setFieldValue={props.setFieldValue}
+                            currency={currency}
+                            showVariant={showVariant}
+                            options={options}
+                            images={product?.images}
+                          />
+                        </FormControl>
+                      </Box>
+                    ) : (
+                      ""
+                    )}
+                    {/* <Button
+                type="submit"
+                mt="20px"
+                backgroundColor="black.100"
+                color="white"
+                width="100%"
+                isLoading={isLoading}
+              >
+                Add Product
+              </Button> */}
+                  </Form>
+                );
+              }}
+            </Formik>
+          </Box>
+        </>
+      ) : (
+        "Error"
+      )}
     </>
   );
 };

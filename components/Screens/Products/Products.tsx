@@ -63,7 +63,7 @@ function Products(props: any) {
       render: (data: any, i: any) => (
         <Image
           alt={`${i}image`}
-          src={data[0]||""}
+          src={data[0]?.src||""}
           width="50px"
           height="52px"
           style={{ borderRadius: "2px" }}

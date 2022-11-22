@@ -24,10 +24,11 @@ import type { CheckboxValueType } from "antd/es/checkbox/Group";
 import { FaUpload } from "react-icons/fa";
 import { useMutation } from "react-query";
 import MaskedLoader from "./MaskedLoader";
+import { headers2 } from "../../../../hooks/allQueries";
 const boxShadow = "rgba(0, 0, 0, 0.1) 0px 1px 2px 0.4px";
 const boxShadow1 = " rgba(0, 0, 0, 0.18) 0px 2px 4px";
 const boxShadow2 = " rgba(0, 0, 0, 0.04) 0px 3px 5px";
-const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
+const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
   const [filed, setFile] = useState<any>([]);
   const [imageSrc, setImageSrc] = useState<any>(null || "");
   const route = "/api/";
@@ -39,7 +40,10 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
 
     const config = {
       method: "POST",
-      body: data.toString(),
+      body: data,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      }
     };
     console.log(config);
     const res = await fetch(route + `products/images`, config);
@@ -56,11 +60,11 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
         let s = response.success;
         if (s && !d.errors) {
           console.log(d);
-          let imgSrc={
-            src:d?.secure_url
-          }
-          setFile((prevState: any) => [...prevState, imgSrc ]);
-         
+          let imgSrc = {
+            src: d,
+          };
+          setFile((prevState: any) => [...prevState, imgSrc]);
+
           toast({
             position: "top-right",
             title: "Success",
@@ -73,9 +77,7 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
           toast({
             position: "top-right",
             title: "Error.",
-            description: `${
-              response.data.errors.product || response.response.data.data
-            }`,
+            description: 'Error uploading',
             status: "error",
             duration: 9000,
             isClosable: true,
@@ -84,13 +86,10 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
         }
       },
       onError: (error: any) => {
-        console.log("the error", error);
-        let s = error?.status;
-        //  console.log(s);
         toast({
           position: "bottom-right",
           title: "Error",
-          description: error?.message,
+          description: "Upload server error",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -99,35 +98,14 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
     }
   );
 
-  const handleChange = (file: any) => {
-    //  let index=file.length-1
+  const handleChange = (file:any) => {
     if (file) {
-      Object.values(file).map((f: any) => {
-        const reader = new FileReader();
-
-        reader.addEventListener(
-          "load",
-          function () {
-            // convert image file to base64 string
-            const src = reader.result;
-            setImageSrc(src);
-            UploadImage.mutate(src);
-            // setFile((prevState: any) => [...prevState, src]);
-          },
-          false
-        );
-        reader.readAsDataURL(f);
+      Object.values(file).map((f:any) => {
+        const formData=new FormData()
+        formData.append('file',f)
+        UploadImage.mutate(formData);
       });
     }
-  };
-
-  const handleUpload = (file: any) => {
-    // if (file) {
-    //   Object.values(file).map((f: any) => {
-    //     //console.log(f)
-    //     UploadImage.mutate(file)
-    //   });
-    // }
   };
 
   const imageFileTypes = ["JPG", "PNG", "GIF", "JPEG"];
@@ -141,14 +119,6 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
     { id: string; src: string }[]
   >([]);
   const [ticked, setTicked] = useState<{ id: string; value: boolean }[]>([]);
-  const [indeterminate, setIndeterminate] = useState(true);
-  const [checkAll, setCheckAll] = useState(false);
-
-  //   const onChange = (list: CheckboxValueType[]) => {
-  //     setCheckedList(list);
-  //     setIndeterminate(!!list.length && list.length < filed.length);
-  //     setCheckAll(list.length === filed.length);
-  //   };]
 
   const onChangeCheck = (id: string, src: string) => {
     let item = {
@@ -240,9 +210,9 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
 
   //clear on success
   useEffect(() => {
-   if(props.uploadSuccess){
-    setFile([])
-   }
+    if (props.uploadSuccess) {
+      setFile([]);
+    }
   }, [props.uploadSuccess]);
   return (
     <Box padding={{ base: "10px", md: "20px" }}>
@@ -306,7 +276,6 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
             <FileUploader
               handleChange={(file: any) => {
                 handleChange(file);
-                handleUpload(file);
                 console.log(file);
               }}
               // classes="fileUploader"
@@ -316,33 +285,32 @@ const UploadImage = (props: { setFieldValue: any,uploadSuccess:any }) => {
               types={imageFileTypes}
               children={
                 <Flex
-                    flexDir="column"
-                    alignItems="center"
-                    flexShrink={1}
-                    border="2px dashed #5F698C"
-                    borderRadius="6px"
-                    textAlign="center"
-                  minH={{base:'100px',lg:'140px'}}
-                    flexWrap="nowrap"
-                    cursor="pointer"
-                    //  h={{base:120,sm:120,md:200,lg:300}}
-                  >
-                    {
-                      UploadImage.isLoading?<MaskedLoader/>:<Box   p="20px">
-
+                  flexDir="column"
+                  alignItems="center"
+                  flexShrink={1}
+                  border="2px dashed #5F698C"
+                  borderRadius="6px"
+                  textAlign="center"
+                  minH={{ base: "100px", lg: "140px" }}
+                  flexWrap="nowrap"
+                  cursor="pointer"
+                  //  h={{base:120,sm:120,md:200,lg:300}}
+                >
+                  {UploadImage.isLoading ? (
+                    <MaskedLoader />
+                  ) : (
+                    <Box p="20px">
                       <Icon as={FaUpload} fontSize="30px" />
-  
+
                       <Text display={{ base: "none", xl: "block" }}>
                         Drag and Drop here <br /> or
                       </Text>
                       <Text display={{ base: "none", lg: "block" }}>
                         Browse Files
                       </Text>
-                      </Box>
-                    }
-                    
-                  </Flex>
-                
+                    </Box>
+                  )}
+                </Flex>
               }
             />
           </Col>
