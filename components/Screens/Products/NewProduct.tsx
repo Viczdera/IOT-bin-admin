@@ -248,9 +248,9 @@ const NewProduct = (props: any) => {
             values.variants = variants;
             console.log(values);
              createPost(values);
-            // if (data?.status == 200 || data?.status == 201) {
-            //   actions.resetForm(initialFormValues);
-            // }
+            if (data?.status == 200 || data?.status == 201) {
+              actions.resetForm(initialFormValues);
+            }
           }}
         >
           {(props: {

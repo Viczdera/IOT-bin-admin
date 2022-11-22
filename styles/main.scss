@@ -2,7 +2,7 @@
 
 .selectOption:hover {
   background-color: rgb(114, 148, 148) !important;
-  color: black !important;
+  color: var(--blue200) !important;
 }
 
 .ant-select-focused:not(.ant-select-disabled)
@@ -14,7 +14,7 @@
 //Product
 #productsTable {
   .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: var(--black100) !important;
+    background-color: var(--blue200) !important;
     border-color: var(--grey100) !important;
   }
   .ant-checkbox-indeterminate .ant-checkbox-inner::after {
@@ -24,97 +24,8 @@
     background: rgb(243, 249, 250) !important;
   }
 }
-//New Product
-.imgGridCont {
-  outline: 2px solid red;
-  & > :first-child {
-    grid-column: 1 / span 2;
-    grid-row: 1 / span 2;
-    outline: 2px solid red;
-    img {
-      width: 80%;
-    }
-    // max-height: 100%;
-  }
-
-  .fileUploader {
-    // grid-column: 2/span 2;
-    // grid-row: 1/span 3;
-    // flex-shrink: 1;
-    // margin-bottom: 8px;
-  }
-  .uploadImgCont {
-    // max-height: 100px;
-  }
-}
-
-//orders analytics
 
 
-.orderAna {
-  background: var(--black200);
-  #progress {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    transform: rotate(-90deg);
-  }
-  
-  circle {
-    stroke-dashoffset: 0;
-    stroke-width: 15%;
-    fill: none;
-  }
-  
-  .bg {
-    stroke: #fff;
-    opacity: 0.3;
-  }
-  
-  #progress .indicator {
-    stroke: #fff;
-  }
-  .scrollCont {
-    display: flex;
-    overflow-x: scroll;
-    padding: 40px 0px 0.5px 0;
-    flex: 0 0 600px;
-    margin: 0 auto;
-  }
-  
-  .scrollItem {
-    flex: 1 0 200px;
-    margin: 0 3px 0 0;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    &:hover {
-      background-color: var(--grey200);
-    }
-  }
-  
-  //scroll bar custom
-  ::-webkit-scrollbar {
-    height: 5px;
-    width: 5px;
-    background: var(--black200);
-   -webkit-border-bottom-right-radius: 8px;
-   -webkit-border-bottom-left-radius: 8px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgb(248, 248, 248);
-     // background: var(--black100);
-    -webkit-border-radius: 8px;
-  }
-
-  ::-webkit-scrollbar-corner {
-    background: var(--black200);
-  }
-}
-
-// .scrollItem:last-of-type {
-//   border-top-right-radius: 0px ;
-//   margin: 0;
-// }
 
 @media only screen and (min-width: 560px) {
   .imgGridCont {

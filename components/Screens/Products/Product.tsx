@@ -106,7 +106,10 @@ const Product = (props: { id: any }) => {
   };
   return (
     <>
-      {isSuccess ? (
+    {isLoading?<Flex w='100%' alignItems='center' justifyContent='center'>
+      <Image src='/loading2.svg'/>
+    </Flex>:<>
+    {isSuccess ? (
         <>
           <Box mt="20px" minH="100vh">
             <Formik
@@ -691,8 +694,13 @@ const Product = (props: { id: any }) => {
           </Box>
         </>
       ) : (
-        "Error"
+       < Flex w='100%' alignItems='center' justifyContent='center'>
+        <Image src='/error0.svg' maxW='150px'/>
+    </Flex>
+        
       )}
+    </>}
+     
     </>
   );
 };

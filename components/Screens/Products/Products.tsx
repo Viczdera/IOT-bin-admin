@@ -10,6 +10,12 @@ import {
   Select,
   Spinner,
   Text,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { BiFilter } from "react-icons/bi";
 import { BsEyeFill } from "react-icons/bs";
@@ -17,14 +23,16 @@ import { Table } from "antd";
 import { useQuery } from "react-query";
 import Link from "next/link";
 import Router from "next/router";
-import { useGetRequest } from "../../../hooks/allQueries";
+import { useGetRequest, usePostRequest } from "../../../hooks/allQueries";
 import { formatter } from "../../../helpers/HelperFunctions";
-
+import { RiDeleteBackLine } from "react-icons/ri";
 //const { Column, ColumnGroup } = Table;
 const boxShadow = "rgba(0, 0, 0, 0.1) 0px 1px 2px 0.4px";
 function Products(props: any) {
   const [products, setProducts] = React.useState([]);
   const [status, setStatus] = React.useState("");
+  //modal
+  const { onClose, isOpen, onOpen } = useDisclosure();
   //table
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -63,7 +71,7 @@ function Products(props: any) {
       render: (data: any, i: any) => (
         <Image
           alt={`${i}image`}
-          src={data[0]?.src||""}
+          src={data[0]?.src || ""}
           width="50px"
           height="52px"
           style={{ borderRadius: "2px" }}
@@ -142,126 +150,190 @@ function Products(props: any) {
     onChange: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
-  const start = () => {
-    setLoading(true); // ajax request after empty completing
+   //post request
+  const {createPost, isLoading:isLoadingDel, isSuccess:isSuccessDel, data:delData } = usePostRequest(
+    true,
+    "/api/products/delete",
+    'allProducts'
+  );
+  useEffect(()=>{
 
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
-  };
+    if (data?.status == 200 || 201) {
+      onClose()
+    }
+  },[delData])
   return (
-    <Box
-      borderRadius="5px"
-      background="white.100"
-      minHeight="80vh"
-      py={{ base: "8px", sm: "15px" }}
-      boxShadow={boxShadow}
-    >
-      <Flex
-        px={{ base: "8px", sm: "15px" }}
-        mb="20px"
-        alignItems="center"
-        justifyContent="space-between"
+    <>
+      <Box
+        borderRadius="5px"
+        background="white.100"
+        minHeight="80vh"
+        py={{ base: "8px", sm: "15px" }}
+        boxShadow={boxShadow}
       >
-        <Text fontWeight={700} fontSize="lg">
-          All Products
-        </Text>
-        <Flex alignItems="center">
-          <Button
-            style={styles.addBtn}
-            border="0.2px solid #7472726c"
-            _hover={styles.addBtn._focus}
-            onClick={() => {
-              Router.push("/products/new");
-            }}
-          >
-            Add Product
-          </Button>
-        </Flex>
-      </Flex>
-
-      <Box overflow="hidden" overflowX="scroll">
-        <Box pos="relative" mb="70px">
-          <Box
-            pos="absolute"
-            top={0}
-            w="100%"
-            zIndex={10}
-            background="white"
-            borderBottomRadius="5px"
-          >
-            <Flex
-              bgColor="blue.200"
-              borderRadius="8px"
-              mx={{ base: "8px", sm: "15px" }}
-              justifyContent="space-between"
-              p="10px"
-              alignItems="center"
+        <Flex
+          px={{ base: "8px", sm: "15px" }}
+          mb="20px"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Text fontWeight={700} fontSize="lg">
+            All Products
+          </Text>
+          <Flex alignItems="center">
+            <Button
+              style={styles.addBtn}
+              border="0.2px solid #7472726c"
+              _hover={styles.addBtn._focus}
+              onClick={() => {
+                Router.push("/products/new");
+              }}
             >
-              <FormControl
-                maxW={{ base: "200px", lg: "300px" }}
-                mr={{ base: "30px", lg: "0px" }}
+              Add Product
+            </Button>
+          </Flex>
+        </Flex>
+
+        <Box overflow="hidden" overflowX="scroll">
+          <Box pos="relative" mb="70px">
+            <Box
+              pos="absolute"
+              top={0}
+              w="100%"
+              zIndex={10}
+              background="white"
+              borderBottomRadius="5px"
+            >
+              <Flex
+                bgColor="blue.200"
+                borderRadius="8px"
+                mx={{ base: "8px", sm: "15px" }}
+                justifyContent="space-between"
+                p="10px"
+                alignItems="center"
               >
-                <form>
-                  <Input
-                    placeholder="Filter Fields"
-                    fontSize="13px"
-                    height="30px"
-                    background="grey.200"
-                    _focus={styles.form._focus}
-                  />
-                </form>
-              </FormControl>
-              <Box h="30px" pos="relative" ml="5px">
-                <Icon
-                  as={BiFilter}
-                  pos="absolute"
-                  zIndex={10}
-                  top="7px"
-                  left="12px"
-                  fontSize="16px"
-                />
-                <Select
-                  mr="40px"
-                  h="30px"
-                  placeholder="All"
-                  style={styles.filterBox}
-                  onChange={(e) => {
-                    setStatus(e.target.value);
-                  }}
+                <FormControl
+                  maxW={{ base: "200px", lg: "300px" }}
+                  mr={{ base: "30px", lg: "0px" }}
                 >
-                  <option value="active">Active</option>
-                  <option value="draft">Draft</option>
-                  <option value="archived">Archived</option>
-                </Select>
-              </Box>
-            </Flex>
-            {isFetching && (
-              <Flex alignItems="center" p={{ base: "8px", sm: "15px" }}>
-                <Spinner mr="10px" size="sm" />
-                <Text>Loading ...</Text>
+                  <form>
+                    <Input
+                      placeholder="Filter Fields"
+                      fontSize="13px"
+                      height="30px"
+                      background="grey.200"
+                      _focus={styles.form._focus}
+                    />
+                  </form>
+                </FormControl>
+                <Box h="30px" pos="relative" ml="5px">
+                  <Icon
+                    as={BiFilter}
+                    pos="absolute"
+                    zIndex={10}
+                    top="7px"
+                    left="12px"
+                    fontSize="16px"
+                  />
+                  <Select
+                    mr="40px"
+                    h="30px"
+                    placeholder="All"
+                    style={styles.filterBox}
+                    onChange={(e) => {
+                      setStatus(e.target.value);
+                    }}
+                  >
+                    <option value="active">Active</option>
+                    <option value="draft">Draft</option>
+                    <option value="archived">Archived</option>
+                  </Select>
+                </Box>
+              </Flex>
+              {isFetching && (
+                <Flex alignItems="center" p={{ base: "8px", sm: "15px" }}>
+                  <Spinner mr="10px" size="sm" />
+                  <Text>Loading ...</Text>
+                </Flex>
+              )}
+            </Box>
+          </Box>
+          <Box px={{ base: "8px", sm: "15px" }}>
+            {hasSelected && (
+              <Flex
+                my="10px"
+                p="5px 10px"
+                borderRadius="5px"
+                color="#fff"
+                background="blue.200"
+                w="max-content"
+                onClick={onOpen}
+              >
+                Delete
+                <Icon as={RiDeleteBackLine} ml="5px" />
               </Flex>
             )}
+
+            <Table
+              id="productsTable"
+              dataSource={tableData}
+              rowSelection={rowSelection}
+              size="small"
+              columns={columns}
+              style={{
+                border: "1px solid #2f3d4944",
+                borderRadius: "5px",
+                overflowX: "auto",
+                minHeight: "80vh",
+              }}
+            ></Table>
           </Box>
         </Box>
-        <Box px={{ base: "8px", sm: "15px" }}>
-          <Table
-            id="productsTable"
-            dataSource={tableData}
-            rowSelection={rowSelection}
-            size="small"
-            columns={columns}
-            style={{
-              border: "1px solid #2f3d4944",
-              borderRadius: "5px",
-              overflowX: "auto",
-              minHeight: "80vh",
-            }}
-          ></Table>
-        </Box>
       </Box>
-    </Box>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        // closeOnOverlayClick={false}
+        isCentered
+      >
+        <ModalOverlay
+          id="chakra_overlay"
+          // backdropFilter='blur(10px) hue-rotate(90deg)'
+        />
+        <ModalContent py="40px" px="30px">
+          <ModalBody>
+            {selectedRowKeys.length == 1 ? (
+              <Text style={styles.txtgrey} textAlign="center" lineHeight="25px">
+                Are you sure you want to delete this product?
+              </Text>
+            ) : (
+              <Text style={styles.txtgrey} textAlign="center" lineHeight="25px">
+                Are you sure you want to delete these {selectedRowKeys.length}{" "}
+                products?
+              </Text>
+            )}
+          </ModalBody>
+          <Flex px="30px" my="15px">
+            <Button style={styles.orngBtn} mr="15px" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              style={styles.blueBtn}
+               isLoading={isLoadingDel}
+               onClick={() => {
+                let data={
+                  items:selectedRowKeys
+                }
+                createPost(data);
+               }}
+            >
+              Continue
+            </Button>
+          </Flex>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
 
@@ -298,6 +370,30 @@ const styles = {
   draft: {
     backgroundColor: "#FF7262",
     color: "#ffffff",
+  },
+  blueBtn: {
+    background: 'var(--blue200)',
+    color: "#fff",
+    //border: "1px solid #056643",
+    borderRadius: "6px",
+    width: "100%",
+  },
+  orngBtn: {
+    background: "#FFF2F2",
+    color: "#c74a2e",
+    border: "1px solid #c74a2e",
+    borderRadius: "6px",
+    width: "100%",
+  },
+  txtgrey: {
+    color: "#272626",
+    fontWeight: "500",
+    fontSize: "20px",
+  },
+  txtBlack: {
+    color: "#000",
+    fontWeight: "600",
+    fontSize: "20px",
   },
 };
 export default Products;
