@@ -58,7 +58,7 @@ const [userDetails,setUserDetails]=useState({
   const boxShadow = "rgba(0, 0, 0, 0.1) 0px 1px 2px 0px";
  
   const {state,dispatch}=useContext(DataValueContext)
-  console.log(state)
+  //console.log(state)
   const logOut=()=>{
     dispatch({ type: "LOGOUT", payload: ''});
   }

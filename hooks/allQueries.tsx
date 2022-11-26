@@ -39,7 +39,7 @@ export const useGetRequest = (endpoint: string,queryName:string, access_token?: 
         status: res.status,
         data: res.data,
       };
-      console.log(data);
+      //console.log(data);
       return data;
     } catch (error: any) {
       let err = {
@@ -52,7 +52,7 @@ export const useGetRequest = (endpoint: string,queryName:string, access_token?: 
 
   const { isLoading, isSuccess,isFetching, data } = useQuery(queryName, () => fetchData(), {
     onSuccess: (response: any) => {
-      console.log(response);
+      //console.log(response);
       let s = response?.status;
       let e = response?.error;
       let d = response?.data;
@@ -72,7 +72,7 @@ export const useGetRequest = (endpoint: string,queryName:string, access_token?: 
       }
     },
     onError: (error: any) => {
-      console.log(error);
+      //console.log(error);
       Toast({
         position: "top-right",
         title: "Error",
@@ -104,7 +104,7 @@ const queryClient=useQueryClient()
         status: res.status,
         data: res.data,
       };
-      // console.log(data);
+      // //console.log(data);
       return data;
     } catch (error: any) {
       let err = {
@@ -122,7 +122,7 @@ const queryClient=useQueryClient()
     data,
   } = useMutation(createRequest, {
     onSuccess: (response: any) => {
-      console.log(response);
+      //console.log(response);
       let s = response?.status;
       let e = response?.error;
       let d = response?.data;
@@ -149,7 +149,7 @@ const queryClient=useQueryClient()
       }
     },
     onError: (error: any) => {
-      console.log(error);
+      //console.log(error);
       Toast({
         position: "top-right",
         title: "Error",

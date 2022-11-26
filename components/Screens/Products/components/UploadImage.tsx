@@ -36,7 +36,7 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
 
   //upload
   const uploadImg = async (data: any) => {
-    // console.log(data)
+    // //console.log(data)
 
     const config = {
       method: "POST",
@@ -45,7 +45,7 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
         "Access-Control-Allow-Origin": "*",
       }
     };
-    console.log(config);
+    //console.log(config);
     const res = await fetch(route + `products/images`, config);
     return await res.json();
   };
@@ -55,11 +55,11 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
     },
     {
       onSuccess: (response) => {
-        console.log(response);
+        //console.log(response);
         let d = response.data;
         let s = response.success;
         if (s && !d.errors) {
-          console.log(d);
+          //console.log(d);
           let imgSrc = {
             src: d,
           };
@@ -159,28 +159,28 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
         );
       };
       setTicked(newTickedState());
-      console.log(newTickedState());
+      //console.log(newTickedState());
       // isChecked(id)
-      // console.log(isChecked(id)||false)
-      console.log(`removed ${id}`);
+      // //console.log(isChecked(id)||false)
+      //console.log(`removed ${id}`);
     }
   };
-  console.log(checkedItems);
-  console.log(ticked);
+  //console.log(checkedItems);
+  //console.log(ticked);
   const deleteSelected = () => {
     // filed.splice(1, 1);
     let checkItemsIndex = checkedItems.map((m) => {
       let index = filed.findIndex(function (i: any, key: any) {
         return key === m.id;
       });
-      console.log(index);
+      //console.log(index);
       return index;
     });
-    console.log(checkItemsIndex);
+    //console.log(checkItemsIndex);
     function removeFromArray(original: any, remove: any) {
       return original.filter((value: any, key: any) => !remove.includes(key));
     }
-    console.log(removeFromArray(filed, checkItemsIndex));
+    //console.log(removeFromArray(filed, checkItemsIndex));
     setFile(removeFromArray(filed, checkItemsIndex));
     setCheckedItems([]);
     setTicked([]);
@@ -203,7 +203,7 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
   //   setIndeterminate(false);
   //   setCheckAll(e.target.checked);
   // };
-  console.log(checkedList);
+  //console.log(checkedList);
   useEffect(() => {
     props.setFieldValue("images", filed);
   }, [filed]);
@@ -264,7 +264,7 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
                       onChange={() => {
                         onChangeCheck(key, m);
 
-                        // console.log(key, m);
+                        // //console.log(key, m);
                       }}
                     />
                   </Box>
@@ -276,7 +276,7 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
             <FileUploader
               handleChange={(file: any) => {
                 handleChange(file);
-                console.log(file);
+                //console.log(file);
               }}
               // classes="fileUploader"
               multiple

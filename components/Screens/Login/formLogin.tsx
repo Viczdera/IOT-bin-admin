@@ -23,13 +23,12 @@ import { DataValueContext } from "../../../context/authContext";
 import { usePostRequest } from "../../../hooks/allQueries";
 
 function LoginForm(props: any) {
-  const router = useRouter();
   const [passHidden, setPassHidden] = useState(true);
  
 
   //context api
   const { state, dispatch } = useContext(DataValueContext);
-  console.log(state);
+  //console.log(state);
   //post request
   const { createPost, isLoading, data } = usePostRequest(
     true,
@@ -39,9 +38,8 @@ function LoginForm(props: any) {
     if (data?.status == 200) {
       const d:object=data?.data?.data
       dispatch({ type: "LOGIN_SUCCESS", payload:d});
-      router.push("/");
     } else {
-      console.log(data);
+      //console.log(data);
       dispatch({ type: "LOGIN_FAILURE", payload: data });
     }
   }, [isLoading]);

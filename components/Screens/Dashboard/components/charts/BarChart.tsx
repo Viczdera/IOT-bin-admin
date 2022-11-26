@@ -75,7 +75,7 @@ function BarChart(props: any) {
     } else {
       setWidth(500);
     }
-    console.log(width);
+    //console.log(width);
   }, [isLargerThan600, isLargerThan960]);
 
   return (

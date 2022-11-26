@@ -9,7 +9,7 @@ export default function middleware(req: any) {
   const { cookies } = req;
   const jwT = cookies.get('ShopAdminJWT') || "";
   
-  // console.log(jwT)
+  // //console.log(jwT)
   const url = req.nextUrl.clone();
 
   if (url.pathname === "/") {

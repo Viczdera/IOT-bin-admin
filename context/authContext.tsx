@@ -45,8 +45,8 @@ interface DataProviderProps {
 const cookie: any = getCookie("ShopAdminJWT");
 const user = cookie && verify(cookie!, "ShopAdminJWT");
 const currency= getFromLocalStorage('currency');
-console.log(user);
-console.log(currency);
+//console.log(user);
+//console.log(currency);
 const initialState = {
   user: user || null,
   currency: currency||'NGN',
@@ -62,7 +62,7 @@ const reducer = (state: AppState, action: Action) => {
       };
     case "LOGIN_SUCCESS":
       let data = action.payload;
-      console.log(data)
+      //console.log(data)
       const token = jwt.sign(data, "ShopAdminJWT");
       const serialized = {
         key: "ShopAdminJWT",
@@ -76,7 +76,7 @@ const reducer = (state: AppState, action: Action) => {
         },
       };
       setCookie(serialized.key, serialized.value, serialized.options);
-      Router.push("/");
+     window.location.replace('/')
       return {
         ...state,
         user: action.payload,

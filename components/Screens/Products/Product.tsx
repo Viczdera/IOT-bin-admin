@@ -71,14 +71,14 @@ const Product = (props: { id: any }) => {
     if (data?.status == 200) {
       let d = data?.data?.data;
       let optionL = Object.keys(d?.options).length;
-      console.log(optionL);
+      //console.log(optionL);
       if (optionL > 0) {
         setOptions(true);
       }
       setProduct(d);
     }
   }, [data]);
-  console.log(product);
+  //console.log(product);
 
   //context
   const { state, dispatch } = useContext(DataValueContext);

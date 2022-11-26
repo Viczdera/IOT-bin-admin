@@ -46,7 +46,7 @@ function EditOptions(props: {
   //higher state
   const [optionsData, setOptionsData] = React.useState(defaultValue);
   //
-  // console.log(optionsData);
+  // //console.log(optionsData);
   const [optionName, setOptionName] = React.useState<any>("");
   const [ivalues, setValues] = React.useState<any>([]);
   const [isValueEmpty, setIsValueEmpty] = React.useState<any>([]);
@@ -80,7 +80,7 @@ function EditOptions(props: {
     }
     setValues(newValues);
   };
-  // console.log(isValueEmpty);
+  // //console.log(isValueEmpty);
   const addValues = () => {
     setValues([...ivalues, ""]);
     setIsValueEmpty([...isValueEmpty, true]);
@@ -101,7 +101,7 @@ function EditOptions(props: {
         ? true
         : false
     );
-    console.log(check);
+    //console.log(check);
     if (ivalues.length == 0) {
       toast({
         position: "top-right",
@@ -150,9 +150,9 @@ function EditOptions(props: {
     props.isOpen && setValues(props.formValues[props.index]?.values);
     props.isOpen && setEmptyValsArr(props.formValues[props.index]?.values);
   }, [props.index, props.isOpen]);
-  console.log(isValueEmpty);
-  console.log(optionsData);
-  console.log(ivalues);
+  //console.log(isValueEmpty);
+  //console.log(optionsData);
+  //console.log(ivalues);
 
   //update options main
   useEffect(() => {

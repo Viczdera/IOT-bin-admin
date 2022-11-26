@@ -52,7 +52,7 @@ function Products(props: any) {
       setProducts(d);
     }
   }, [data]);
-  console.log(products);
+  //console.log(products);
   //Add keys to product
   const tableData = products?.map((m: any, i) => {
     m.key = m._id;
@@ -148,7 +148,7 @@ function Products(props: any) {
     },
   ];
   const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+    //console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {

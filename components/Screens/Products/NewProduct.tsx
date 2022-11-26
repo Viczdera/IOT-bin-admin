@@ -123,7 +123,7 @@ const NewProduct = (props: any) => {
     editOnOpen();
   };
   // useEffect(() => {
-  //   console.log(formValues);
+  //   //console.log(formValues);
   // }, [formValues]);
 
   //testing combination
@@ -151,7 +151,7 @@ const NewProduct = (props: any) => {
     });
     return optionValues.length > 0 ? cartesian(optionValues) : [];
   };
-  // console.log(dVariants());
+  // //console.log(dVariants());
   function mapVariants() {
     let variantsWithOptions = dVariants().map((m: any) => {
       return Object.fromEntries(
@@ -218,7 +218,7 @@ const NewProduct = (props: any) => {
     'allProducts'
   );
   if (data?.status == 200 || 201) {
-    console.log(data);
+    //console.log(data);
   }
   const handleCurrencyChange = (value: string) => {
     setShowVariant(false);
@@ -246,7 +246,7 @@ const NewProduct = (props: any) => {
           onSubmit={(values, actions) => {
             values.options = formValues;
             values.variants = variants;
-            console.log(values);
+            //console.log(values);
              createPost(values);
             if (data?.status == 200 || data?.status == 201) {
               actions.resetForm(initialFormValues);

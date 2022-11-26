@@ -81,7 +81,7 @@ function OptionsForm(props: {
     }
     setValues(newValues);
   };
-  // console.log(isValueEmpty);
+  // //console.log(isValueEmpty);
   const addValues = () => {
     setValues([...ivalues, ""]);
     setIsValueEmpty([...isValueEmpty, true]);
@@ -134,7 +134,7 @@ function OptionsForm(props: {
   // };
 
   useEffect(() => {
-   // console.log("pushed");
+   // //console.log("pushed");
     //back to defaults
     setValues([]);
     setIsValueEmpty([]);
@@ -170,7 +170,7 @@ function OptionsForm(props: {
                     m == true ? true : false
                   );
                 };
-                // console.log(value());
+                // //console.log(value());
                 !empty() && !exist() && submitForm();
               }}
               initialValues={{ name: "", value: "" }}

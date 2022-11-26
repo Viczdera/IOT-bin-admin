@@ -36,7 +36,7 @@ const OptionsVariants = (props: {
           props.variants.splice(i, 1, v_price);
         }
 
-        console.log(props.variants);
+        //console.log(props.variants);
         break;
       case "sku":
         let v_sku = props.variants[i];
@@ -48,7 +48,7 @@ const OptionsVariants = (props: {
         let v_image = props.variants[i];
         v_image.image = value;
         props.variants.splice(i, 1, v_image);
-        console.log(props.variants);
+        //console.log(props.variants);
         break;
       default:
         //console.log(props.variants);
@@ -106,7 +106,7 @@ const OptionsVariants = (props: {
                 <Text style={styles.title}>Sku</Text>
               </Flex>
             </Flex>
-            {/* {console.log(props.variants)} */}
+            {/* {//console.log(props.variants)} */}
             {props.showVariant &&
               props.variants.map((m: any, i: any) => (
                 <>
@@ -163,7 +163,7 @@ const OptionsVariants = (props: {
                           <InputLeftAddon
                             children={props.currency == "NGN" ? "₦" : "$ "}
                           />
-                          {/* {console.log(price.current?.value)} */}
+                          {/* {//console.log(price.current?.value)} */}
                           <Input
                            disabled={props.disabled||false}
                             w="100%"

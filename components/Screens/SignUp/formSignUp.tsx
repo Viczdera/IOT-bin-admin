@@ -202,7 +202,7 @@ export const PasswordInfoForm: React.FC<PasswordInfoProps> = ({
           password: values.password,
           c_password: values.c_password,
         };
-      //  console.log(postValues);
+      //  //console.log(postValues);
 
         createPost(postValues);
  

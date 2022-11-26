@@ -3,7 +3,7 @@ export const addToLocalStorage = (key: any, value: any) => {
   try {
     return localStorage.setItem(key, value);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
   }
 };
 

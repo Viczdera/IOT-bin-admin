@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const mongoDbUrl: string = process.env.MONGODB_URL!;
 const connectDB = () => {
   if (mongoose?.connections[0].readyState) {
-    console.log("Database connected");
+    //console.log("Database connected");
     return;
   }
   mongoose.connect(mongoDbUrl),
@@ -17,7 +17,7 @@ const connectDB = () => {
       if (err) {
         throw err;
       }
-      console.log("Database Connected");
+      //console.log("Database Connected");
     };
 };
 export default connectDB;

@@ -40,7 +40,7 @@ apiRoute.post(async (req: any, res: any) => {
 const fileUpload = (file: any) => {
   try {
     return new Promise((resolve, reject) => {
-      console.log(file)
+      //console.log(file)
       let upload = cloudinary.uploader.upload_stream(
         {
           upload_preset: "en1ycnhz_primeries",
@@ -48,7 +48,7 @@ const fileUpload = (file: any) => {
         },
         (error: any, result: any) => {
           if (result) {
-            console.log(result)
+            //console.log(result)
             resolve(result);
           } else {
             reject(error);
@@ -58,7 +58,7 @@ const fileUpload = (file: any) => {
       return createReadStream(file.buffer).pipe(upload)
     });
   } catch (err) {
-    console.log(err)
+    //console.log(err)
     return err;
   }
 };

@@ -33,7 +33,7 @@ const Ratings = (props: any) => {
     return ratio;
   };
   const ratio = ratioFunc();
-  console.log(ratio);
+  //console.log(ratio);
   useEffect(() => {
     setLoad(true);
   }, [1]);

@@ -15,7 +15,7 @@ export default async (req: any, res: any) => {
 const deleteProduct = async (req: any, res: any) => {
     try{
         const {items}=req.body
-        console.log(items)
+        //console.log(items)
         const products= await Product.deleteMany({_id:{$in:items}})
         res.status(200).json({
           success: true,

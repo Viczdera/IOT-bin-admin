@@ -49,7 +49,7 @@ const addProduct = async (req: any, res: any) => {
         })
      
     }catch(err){
-        console.log(err)
+        //console.log(err)
         res.status(500).json({ success: false, message: 'Error creating product',data:err })
     }
 
