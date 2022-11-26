@@ -13,7 +13,7 @@ const nextConnect = require('next-connect')
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: './public/uploads',
+    destination: '/uploads',
     filename: (req: any, file: any, cb: any) => cb(null, file.originalname),
   }),
 });
