@@ -58,25 +58,9 @@ function MobileNav(props: mobileProps) {
         <DrawerContent display={{ base: "block", sm: "none" }}>
           <DrawerCloseButton />
 
-          <DrawerBody>
-            <Box mt="40px">
-              <InputGroup h="30px">
-                <Input
-                  placeholder="search products"
-                  h="30px"
-                  _focus={{ outline: "none" }}
-                />
-                <InputRightAddon
-                  h="30px"
-                  background="black.100"
-                  children={
-                    <Icon as={BiSearchAlt} color="white.100" fontSize="20px" />
-                  }
-                />
-              </InputGroup>
-            </Box>
-          </DrawerBody>
-          <Container fontFamily="Raleway">
+          <DrawerBody pt='80px' >
+            
+          <Container maxW='md' p={0} m={0} fontFamily="Open Sans, sans-serif">
             <Flex my='100px' flexDir="column" w="100%" alignItems="flex-start" as="nav">
               <Menu placement="right">
                 <SideNavItem
@@ -137,7 +121,7 @@ function MobileNav(props: mobileProps) {
               </Flex>
             </Flex>
           </Container>
-          <DrawerFooter></DrawerFooter>
+          </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>

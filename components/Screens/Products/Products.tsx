@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -36,6 +36,9 @@ function Products(props: any) {
   //table
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  //search
+  const [searchValue, setSearchValue] = React.useState(false);
+  const [filteredData, setFilteredData] = React.useState<any>([]);
 
   //fetch products
   const { isLoading, data, isSuccess, isFetching } = useGetRequest(
@@ -69,13 +72,16 @@ function Products(props: any) {
       dataIndex: "images",
       key: 0,
       render: (data: any, i: any) => (
-        <Image
-          alt={`${i}image`}
-          src={data[0]?.src || ""}
-          width="50px"
-          height="52px"
-          style={{ borderRadius: "2px" }}
-        />
+        <Box style={styles.imgCont}>
+
+          <Image
+            alt={`${i}image`}
+            src={data[0]?.src || ""}
+            maxW='100%'
+            width="auto"
+            height="auto"
+          />
+        </Box>
       ),
     },
     {
@@ -149,19 +155,38 @@ function Products(props: any) {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  const hasSelected = selectedRowKeys.length > 0;
-   //post request
-  const {createPost, isLoading:isLoadingDel, isSuccess:isSuccessDel, data:delData } = usePostRequest(
-    true,
-    "/api/products/delete",
-    'allProducts'
-  );
-  useEffect(()=>{
-
+  let hasSelected = selectedRowKeys.length > 0;
+  //post request
+  const {
+    createPost,
+    isLoading: isLoadingDel,
+    isSuccess: isSuccessDel,
+    data: delData,
+  } = usePostRequest(true, "/api/products/delete", "allProducts");
+  useEffect(() => {
     if (data?.status == 200 || 201) {
-      onClose()
+      setSelectedRowKeys([])
+      onClose();
     }
-  },[delData])
+  }, [delData]);
+
+  //refs
+  const searchField = useRef<HTMLInputElement>(null);
+
+  const searchTable = (text: string) => {
+    setSearchValue(true);
+    if (text !== "") {
+      const filtered = tableData.filter((m: any, i: number) => {
+        return Object.values(m)
+          .join("")
+          .toLowerCase()
+          .includes(text.toLowerCase());
+      });
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(tableData);
+    }
+  };
   return (
     <>
       <Box
@@ -222,33 +247,14 @@ function Products(props: any) {
                       fontSize="13px"
                       height="30px"
                       background="grey.200"
+                      ref={searchField}
+                      onChange={(e) =>
+                        searchTable(searchField?.current?.value || "")
+                      }
                       _focus={styles.form._focus}
                     />
                   </form>
                 </FormControl>
-                <Box h="30px" pos="relative" ml="5px">
-                  <Icon
-                    as={BiFilter}
-                    pos="absolute"
-                    zIndex={10}
-                    top="7px"
-                    left="12px"
-                    fontSize="16px"
-                  />
-                  <Select
-                    mr="40px"
-                    h="30px"
-                    placeholder="All"
-                    style={styles.filterBox}
-                    onChange={(e) => {
-                      setStatus(e.target.value);
-                    }}
-                  >
-                    <option value="active">Active</option>
-                    <option value="draft">Draft</option>
-                    <option value="archived">Archived</option>
-                  </Select>
-                </Box>
               </Flex>
               {isFetching && (
                 <Flex alignItems="center" p={{ base: "8px", sm: "15px" }}>
@@ -268,6 +274,7 @@ function Products(props: any) {
                 background="blue.200"
                 w="max-content"
                 onClick={onOpen}
+                cursor='pointer'
               >
                 Delete
                 <Icon as={RiDeleteBackLine} ml="5px" />
@@ -276,7 +283,7 @@ function Products(props: any) {
 
             <Table
               id="productsTable"
-              dataSource={tableData}
+              dataSource={searchValue ? filteredData : tableData}
               rowSelection={rowSelection}
               size="small"
               columns={columns}
@@ -320,13 +327,13 @@ function Products(props: any) {
             </Button>
             <Button
               style={styles.blueBtn}
-               isLoading={isLoadingDel}
-               onClick={() => {
-                let data={
-                  items:selectedRowKeys
-                }
+              isLoading={isLoadingDel}
+              onClick={() => {
+                let data = {
+                  items: selectedRowKeys,
+                };
                 createPost(data);
-               }}
+              }}
             >
               Continue
             </Button>
@@ -372,7 +379,7 @@ const styles = {
     color: "#ffffff",
   },
   blueBtn: {
-    background: 'var(--blue200)',
+    background: "var(--blue200)",
     color: "#fff",
     //border: "1px solid #056643",
     borderRadius: "6px",
@@ -394,6 +401,12 @@ const styles = {
     color: "#000",
     fontWeight: "600",
     fontSize: "20px",
+  },
+  imgCont: {
+    width: "60px",
+    height: "60px",
+    overflow: "hidden",
+    borderRadius: "2px",
   },
 };
 export default Products;

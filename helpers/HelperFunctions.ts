@@ -22,3 +22,6 @@ export const FormatDate = (data: any) => {
     return data != null ? moment(data).format("DD-MM-YYYY") : "--------"
 
 }
+export const CamelCase=(data:string)=>{
+    return data.charAt(0).toUpperCase() + data.slice(1);
+}

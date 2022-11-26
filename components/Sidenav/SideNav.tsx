@@ -35,6 +35,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { DataValueContext } from "../../context/authContext";
+import { CamelCase } from "../../helpers/HelperFunctions";
 function SideNav() {
   const [sideNavSize, setSideNavSize] = useState("large");
   const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
@@ -52,13 +53,14 @@ function SideNav() {
   //   else setSideNavSize("xsmall");
   // };
   const boxShadow = "rgba(0, 0, 0, 0.1) 0px 1px 2px 0px";
-  const boxShadow1 = " rgba(0, 0, 0, 0.18) 0px 2px 4px";
-  const boxShadow2 = "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px";
-  const boxShadow3 = "rgba(0, 0, 0, 0.04) 0px 3px 5px";
+ 
   const {state,dispatch}=useContext(DataValueContext)
   const logOut=()=>{
     dispatch({ type: "LOGOUT", payload: ''});
   }
+ 
+  const name = CamelCase(state.user?.user_name||"")
+  const email = state.user?.email||""
   return (
     <Flex
       top={0}
@@ -197,8 +199,8 @@ function SideNav() {
                       textAlign='left'
                       display={sideNavSize == "small" ? "none" : "block"}
                     >
-                      <Text>Name</Text>
-                      <Text>@gmail.com</Text>
+                      <Text>{name}</Text>
+                      <Text>{email}</Text>
                     </Box>
                     <Icon
                       mr="5px"

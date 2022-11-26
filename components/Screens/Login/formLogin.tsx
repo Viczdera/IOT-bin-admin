@@ -25,16 +25,7 @@ import { usePostRequest } from "../../../hooks/allQueries";
 function LoginForm(props: any) {
   const router = useRouter();
   const [passHidden, setPassHidden] = useState(true);
-  //use ref
-  const name = useRef<HTMLInputElement>(null);
-  const email = useRef<HTMLInputElement>(null);
-
-  const viewPassword = () => {
-    setPassHidden(false);
-  };
-  const hidePassword = () => {
-    setPassHidden(true);
-  };
+ 
 
   //context api
   const { state, dispatch } = useContext(DataValueContext);

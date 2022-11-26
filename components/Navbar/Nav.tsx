@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
@@ -26,13 +27,15 @@ import { BiSearchAlt } from "react-icons/bi";
 import { Dropdown, Menu as MenuAntd, Space } from "antd";
 import { DataValueContext } from "../../context/authContext";
 import Router from "next/router";
+import { CamelCase } from "../../helpers/HelperFunctions";
 const Nav = () => {
-  const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
-  const {state,dispatch}=useContext(DataValueContext)
-  const logOut=()=>{
-    dispatch({ type: "LOGOUT", payload: ''});
-    Router.push('/login')
-  }
+  const { state, dispatch } = useContext(DataValueContext);
+  const logOut = () => {
+    dispatch({ type: "LOGOUT", payload: "" });
+    Router.push("/login");
+  };
+  const userName = state.user?.user_name || "";
+  const name = CamelCase(userName)
   const menu = (
     <MenuAntd
       style={{
@@ -42,14 +45,6 @@ const Nav = () => {
         boxShadow: " rgba(0, 0, 0, 0.05) 0px 1px 2px 0px ",
       }}
       items={[
-        {
-          label: <Link href="/settings/">Profile</Link>,
-          key: "0",
-        },
-        {
-          label: <Link href="/settings/">Settings</Link>,
-          key: "1",
-        },
         {
           type: "divider",
         },
@@ -86,51 +81,18 @@ const Nav = () => {
             <Flex alignItems="center" justifyContent="space-between" w="100%">
               <Box>
                 <Link href="/" passHref>
-       
-                  <Image src="/shopLogo2.gif" alt="logo" width="80" height="40" />
+                  <Image
+                    src="/shopLogo2.gif"
+                    alt="logo"
+                    width="80"
+                    height="40"
+                  />
                 </Link>
               </Box>
-              <Box display={{ base: "none", md: "block" }}>
-                <InputGroup h="30px">
-                  <Input
-                 fontFamily='Cerebri Sans Light'
-                 fontSize='sm'
-                    placeholder="Search products"
-                    w='210px'
-                    h="30px"
-                    _focus={{ outline: "none" }}
-                  />
-                  <InputRightAddon
-                    h="30px"
-                    background="black.100"
-                    children={
-                      <Icon
-                        as={BiSearchAlt}
-                        color="white.100"
-                        fontSize="20px"
-                      />
-                    }
-                  />
-                </InputGroup>
-              </Box>
-              <Box>
+
+              <Flex alignItems="center">
+                <Text mx="10px">Hi {name} !</Text>
                 <Flex alignItems="center">
-                  <Flex mr="10px" pos="relative" cursor="pointer">
-                    <Icon fontSize="35px" as={IoNotificationsCircleOutline} />
-                    <Flex
-                      w="16px"
-                      h="16px"
-                      borderRadius="50%"
-                      pos="absolute"
-                      top="-5px"
-                      right="-2px"
-                      alignItems="center"
-                      justifyContent="center"
-                      backgroundColor="white.100"
-                    >
-                      <Icon fontSize="50px" color="#2E8BF7" as={BsDot} />
-                    </Flex>
-                  </Flex>
                   <Dropdown
                     placement="bottomRight"
                     arrow
@@ -163,7 +125,7 @@ const Nav = () => {
                     </a>
                   </Dropdown>
                 </Flex>
-              </Box>
+              </Flex>
             </Flex>
           </Flex>
         </Menu>

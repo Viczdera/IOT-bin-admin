@@ -230,15 +230,15 @@ const styles = {
   },
   valueCont: {
     borderRadius: "10px",
-    background: "var(--black100)",
+    background: "var(--blue200)",
     color: "white",
     padding: "1px 8px",
   },
   editBtn: {
     backgroundColor: "var(--grey200)",
-    color: "var(--black100)",
+    color: "var(--blue200)",
     fontSize: "14px",
-    border: "1px solid var(--black100)",
+    border: "1px solid var(--blue200)",
     active: {},
     focus: {
       border: "2px solid #000",

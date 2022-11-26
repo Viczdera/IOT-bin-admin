@@ -1,7 +1,5 @@
 import React from "react";
 import "../styles/globals.css";
-import "@fontsource/raleway/400.css";
-import "@fontsource/open-sans/700.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import appTheme from "../theme/appTheme";

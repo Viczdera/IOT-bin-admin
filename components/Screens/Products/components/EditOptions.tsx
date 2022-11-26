@@ -331,7 +331,7 @@ function EditOptions(props: {
             </Button>
             <Button
               style={styles.btn}
-              background="black.100"
+              background="blue.200"
               _active={{ background: "var(--black200)" }}
               _focus={{ background: "var(--black200)" }}
               _hover={{ background: "black" }}

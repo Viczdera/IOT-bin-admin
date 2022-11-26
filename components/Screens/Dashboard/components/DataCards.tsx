@@ -62,10 +62,10 @@ const CardCont = (props: {
             </>
           ) : (
             <>
-              <Text className="number" fontWeight="bold">
+              <Text fontFamily='Open Sans, sans-serif' className="number" fontWeight="bold">
                 {props.value}
               </Text>
-              <Text fontSize="14px">{props.title}</Text>
+              <Text  fontSize="14px">{props.title}</Text>
             </>
           )}
         </Box>
@@ -123,7 +123,7 @@ function DataCards(props: any) {
 const styles = {
   card: {
     border:' 1px solid #E5EBF0',
-    color: "var(--black100)",
+    color: "var(--blue200)",
 
     borderRadius: "10px",
     

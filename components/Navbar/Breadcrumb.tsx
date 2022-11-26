@@ -11,7 +11,7 @@ import { BsChevronRight } from "react-icons/bs";
 const BreadcrumbNav = () => {
   const {pathname}=useRouter()
   return (
-    <Flex width="100%" mt="90px" mb="20px" py={4} fontFamily='Cerebri Sans'>
+    <Flex width="100%" mt="90px" mb="20px" py={4} >
       {/* <Breadcrumbs
       
         listStyle={styles.listStyle}

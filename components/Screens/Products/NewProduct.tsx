@@ -422,7 +422,7 @@ const NewProduct = (props: any) => {
                             }}
                           >
                             <NumberInputField
-                              _focus={{ border: "2px solid var(--black100)" }}
+                              _focus={{ border: "2px solid var(--blue200)" }}
                             />
                             <NumberInputStepper height="38px" top="0px">
                               <NumberIncrementStepper
@@ -794,9 +794,12 @@ const NewProduct = (props: any) => {
               <Button
                 type="submit"
                 mt="20px"
-                backgroundColor="black.100"
+                backgroundColor="blue.200"
                 color="white"
                 width="100%"
+                _active={{background:'var(--black200)'}}
+                _focus={{background:'var(--black200)'}}
+                _hover={{background:'black'}}
                 isLoading={isLoading}
               >
                 Add Product
@@ -849,15 +852,15 @@ const styles = {
   },
   valueCont: {
     borderRadius: "10px",
-    background: "var(--black100)",
+    background: "var(--blue200)",
     color: "white",
     padding: "1px 8px",
   },
   editBtn: {
     backgroundColor: "var(--grey200)",
-    color: "var(--black100)",
+    color: "var(--blue200)",
     fontSize: "14px",
-    border: "1px solid var(--black100)",
+    border: "1px solid var(--blue200)",
     active: {},
     focus: {
       border: "2px solid #000",

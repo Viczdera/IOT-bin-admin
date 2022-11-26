@@ -29,8 +29,8 @@ const appTheme = extendTheme({
     },
   },
   fonts: {
-    heading: "Raleway, sans-serif",
-    body: "Raleway, sans-serif",
+    heading: "'Open Sans', sans-serif",
+    body: "'Open Sans', sans-serif",
   },
   fontWeights: {
     hairline: 100,

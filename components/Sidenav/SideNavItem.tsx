@@ -19,24 +19,26 @@ const SideNavItem = (props: navProps) => {
     : pathname.startsWith(props.href);
 
   return (
-    <Flex
-      mt={5}
-      flexDir="column"
-      fontFamily="Raleway"
-      
-      w="100%"
-      alignItems={props.sideNavSize == "small" ? "center" : "flex-start"}
-      backgroundColor={isActive ? "#fff" : "grey.300"}
-      borderTop={isActive?'1px solid  #E5EBF0':'none'}
-      borderBottom={isActive?'1px solid  #E5EBF0':'none'}
-    _hover={{backgroundColor:`${!isActive && "grey.200"}`}}
-      color={isActive ? "black.100" : "grey.400"}
-      
-      pl={props.sideNavSize == "large" ? "5" : ""}
-      cursor='pointer'
-    >
-      <Link href={props.href} passHref>
-        <MenuButton  width="100%">
+    <Flex mt={5}
+    flexDir="column"
+    fontFamily="Open Sans, sans-serif"
+    w="100%"
+    
+    backgroundColor={isActive ? "#fff" : "grey.300"}
+    borderTop={isActive ? "1px solid  #E5EBF0" : "none"}
+    borderBottom={isActive ? "1px solid  #E5EBF0" : "none"}
+    _hover={{ backgroundColor: `${!isActive && "grey.200"}` }}
+    color={isActive ? "black.100" : "grey.400"}
+   
+
+    cursor="pointer">
+
+    <Link href={props.href} passHref>
+      <Flex
+       pl={props.sideNavSize == "large" ? "5" : ""}
+        alignItems={props.sideNavSize == "small" ? "center" : "flex-start"}
+      >
+        <MenuButton width="100%">
           <Flex
             flexDir="row"
             padding="5%"
@@ -50,10 +52,15 @@ const SideNavItem = (props: navProps) => {
               as={props.icon}
               mr={props.sideNavSize == "small" ? "0" : "5px"}
             />
-            {props.sideNavSize == "small" ? "" : <Text fontWeight='700'>{props.title}</Text>}
+            {props.sideNavSize == "small" ? (
+              ""
+            ) : (
+              <Text fontWeight="700">{props.title}</Text>
+            )}
           </Flex>
         </MenuButton>
-      </Link>
+      </Flex>
+    </Link>
     </Flex>
   );
 };
