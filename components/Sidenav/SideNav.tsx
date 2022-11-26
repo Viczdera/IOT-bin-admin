@@ -39,7 +39,10 @@ import { CamelCase } from "../../helpers/HelperFunctions";
 function SideNav() {
   const [sideNavSize, setSideNavSize] = useState("large");
   const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
-
+const [userDetails,setUserDetails]=useState({
+  name:"",
+  email:""
+})
   //TODO:fix layout effect.Use contextapi/ redux for state
   useLayoutEffect(() => {
     isLargerThan1280 ? setSideNavSize("large") : setSideNavSize("small");
@@ -58,9 +61,15 @@ function SideNav() {
   const logOut=()=>{
     dispatch({ type: "LOGOUT", payload: ''});
   }
- 
+ useEffect(()=>{
   const name = CamelCase(state.user?.user_name||"")
   const email = state.user?.email||""
+  let newDetails={
+    name:name,
+    email:email
+  }
+  setUserDetails(newDetails)
+ },[])
   return (
     <Flex
       top={0}
@@ -199,8 +208,8 @@ function SideNav() {
                       textAlign='left'
                       display={sideNavSize == "small" ? "none" : "block"}
                     >
-                      <Text>{name}</Text>
-                      <Text>{email}</Text>
+                      <Text>{userDetails.name}</Text>
+                      <Text>{userDetails.email}</Text>
                     </Box>
                     <Icon
                       mr="5px"

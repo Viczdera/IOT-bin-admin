@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext,useState,useEffect } from "react";
 import logo from "../../Assets/logo5.svg";
 import { MdOutlineSupervisedUserCircle } from "react-icons/md";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
@@ -30,12 +30,24 @@ import Router from "next/router";
 import { CamelCase } from "../../helpers/HelperFunctions";
 const Nav = () => {
   const { state, dispatch } = useContext(DataValueContext);
+  const [userDetails,setUserDetails]=useState({
+    name:"",
+    email:""
+  })
   const logOut = () => {
     dispatch({ type: "LOGOUT", payload: "" });
     Router.push("/login");
   };
-  const userName = state.user?.user_name || "";
-  const name = CamelCase(userName)
+
+  useEffect(()=>{
+    const name = CamelCase(state.user?.user_name||"")
+    const email = state.user?.email||""
+    let newDetails={
+      name:name,
+      email:email
+    }
+    setUserDetails(newDetails)
+   },[])
   const menu = (
     <MenuAntd
       style={{
@@ -91,7 +103,7 @@ const Nav = () => {
               </Box>
 
               <Flex alignItems="center">
-                <Text mx="10px">Hi {name} !</Text>
+                <Text mx="10px">Hi {userDetails.name} !</Text>
                 <Flex alignItems="center">
                   <Dropdown
                     placement="bottomRight"

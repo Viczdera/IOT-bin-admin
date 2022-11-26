@@ -223,7 +223,7 @@ const UploadImage = (props: { setFieldValue: any; uploadSuccess: any }) => {
         disabled={checkedItems.length > 0 ? false : true}
         onClick={deleteSelected}
       >
-        delete
+        Delete
       </Button>
       <Box
       //style={styles.gridCont}
