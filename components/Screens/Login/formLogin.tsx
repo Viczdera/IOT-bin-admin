@@ -37,8 +37,8 @@ function LoginForm(props: any) {
   );
   useEffect(() => {
     if (data?.status == 200) {
-      console.log(data);
-      dispatch({ type: "LOGIN_SUCCESS", payload: data });
+      const d:object=data?.data?.data
+      dispatch({ type: "LOGIN_SUCCESS", payload:d});
       router.push("/");
     } else {
       console.log(data);

@@ -61,8 +61,8 @@ const reducer = (state: AppState, action: Action) => {
         isFetching: action.payload,
       };
     case "LOGIN_SUCCESS":
-      let data = action.payload?.data?.data;
-     // console.log(data)
+      let data = action.payload;
+      console.log(data)
       const token = jwt.sign(data, "ShopAdminJWT");
       const serialized = {
         key: "ShopAdminJWT",

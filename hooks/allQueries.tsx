@@ -100,7 +100,7 @@ const queryClient=useQueryClient()
       const res = await axios.post(`${endpoint}`, formData, {
         headers: headers(json, access_token),
       });
-      let data = {
+      let data:any = {
         status: res.status,
         data: res.data,
       };

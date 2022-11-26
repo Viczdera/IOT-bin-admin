@@ -1,7 +1,9 @@
 import cloudinary from "../../../utils/cloudinary"
 import { createReadStream } from "streamifier"
+import { memoryStorage } from "multer"
 const multer = require('multer')
 const nextConnect = require('next-connect')
+
 // eslint-disable-next-line import/no-anonymous-default-export
 // export default async (req: any, res: any) => {
 //     switch (req.method) {
@@ -10,13 +12,8 @@ const nextConnect = require('next-connect')
 //             break
 //     }
 // }
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: '/uploads',
-    filename: (req: any, file: any, cb: any) => cb(null, file.originalname),
-  }),
-});
+const storage=memoryStorage()
+const upload = multer({storage});
 
 const apiRoute = nextConnect({
   onError(error: any, req: any, res: any) {
@@ -32,7 +29,6 @@ apiRoute.use(upload.single('file'));
 apiRoute.post(async (req: any, res: any) => {
   try {
     const upload: any = await fileUpload(req.file);
-    console.log(upload)
     return res.status(200).json({ success: true, data: upload.secure_url });
   } catch (err) {
     return res
@@ -44,22 +40,25 @@ apiRoute.post(async (req: any, res: any) => {
 const fileUpload = (file: any) => {
   try {
     return new Promise((resolve, reject) => {
-      let upload = cloudinary.uploader.upload(file.path,
+      console.log(file)
+      let upload = cloudinary.uploader.upload_stream(
         {
           upload_preset: "en1ycnhz_primeries",
           allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
         },
-        (error, result) => {
+        (error: any, result: any) => {
           if (result) {
+            console.log(result)
             resolve(result);
           } else {
             reject(error);
           }
         }
       );
-      return upload
+      return createReadStream(file.buffer).pipe(upload)
     });
   } catch (err) {
+    console.log(err)
     return err;
   }
 };
