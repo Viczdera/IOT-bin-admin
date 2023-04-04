@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Screens/Dashboard/components/charts/Doughnut.tsx", "components/Screens/Dashboard/components/charts/Doughnut.tsx"],
   "exclude": ["node_modules"]
 }

@@ -1,0 +1,48 @@
+//Dashboard
+
+.selectOption:hover {
+  background-color: rgb(114, 148, 148) !important;
+  color: var(--blue200) !important;
+}
+
+.ant-select-focused:not(.ant-select-disabled)
+  .ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  border-radius: 20px !important;
+}
+
+//Product
+#productsTable {
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: var(--blue200) !important;
+    border-color: var(--grey100) !important;
+  }
+  .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+    background-color: var(--grey100) !important;
+  }
+  .ant-table-tbody > tr.ant-table-row-selected > td {
+    background: rgb(243, 249, 250) !important;
+  }
+}
+
+
+
+@media only screen and (min-width: 560px) {
+  .imgGridCont {
+    outline: 2px solid red;
+    & > :first-child {
+      grid-column: 1 / span 1;
+      grid-row: 1 / span 2;
+      outline: 2px solid red;
+      img {
+        width: 100%;
+      }
+    }
+    .fileUploader {
+      // grid-column: 2/span 2;
+      // grid-row: 1/span 3;
+      // flex-shrink: 1;
+      // margin-bottom: 8px;
+    }
+  }
+}
