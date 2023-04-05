@@ -149,7 +149,7 @@ const CardCont = (props: {
     </Flex>
   );
 };
-function DataCards(props: { loading: boolean;fetchin:boolean; sensorData: any }) {
+function DataCards(props: { loading: boolean;fetching:boolean; sensorData: any }) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
@@ -176,7 +176,7 @@ function DataCards(props: { loading: boolean;fetchin:boolean; sensorData: any })
   ];
   return (
     <Box>
-      {props.fetchin&& <Spinner  size="sm"/>}
+      {props.fetching&& <Spinner  size="sm"/>}
 
     <Flex
       p={0}
@@ -186,6 +186,7 @@ function DataCards(props: { loading: boolean;fetchin:boolean; sensorData: any })
       {overviewData.map((m, i) => (
         
           <CardCont
+          key={i}
             loading={loading}
             num={m.no}
             title={m.title}

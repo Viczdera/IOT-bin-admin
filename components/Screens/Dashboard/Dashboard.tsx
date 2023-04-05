@@ -50,7 +50,7 @@ function Dashboard() {
   return (
     <Box w="100%">
       <Box style={styles.boxCont}>
-        <DataCards loading={isLoading} isFetching={isFetching} sensorData={sensorData} />
+        <DataCards loading={isLoading} fetching={isFetching} sensorData={sensorData} />
       </Box>
       <Flex flexGrow={1}>
         <Flex w="100%">
