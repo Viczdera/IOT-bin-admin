@@ -55,19 +55,6 @@ export default function handler(
     if (snapshot.exists()) {
       console.log(snapshot.val());
       res.status(200).json({ message: 'success', data: snapshot.val() })
-      messageClient.messages
-        .create({
-          body: 'Hello from iot-bin-node',
-          from: "+15855802207",
-          to: "+2348168321836"
-        })
-        .then((message: any) => {
-          console.log(message)
-        }).catch((error: any) => {
-          // You can implement your fallback code here
-          console.log(error);
-        });
-      // messageClient.calls
       //   .create({
       //     url: 'http://demo.twilio.com/docs/voice.xml',
       //     from: "+15855802207",

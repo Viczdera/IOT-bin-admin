@@ -49,7 +49,7 @@ const updateservo = async (req: any, res: any) => {
             update(bin1Ref, { servo: servo }).then(() => {
 
                 if(servo=='off'){
-                    sendMessage("IOT ALERT: Bin 1 is full and needs to be emptied. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
+                    sendMessage("SMART BIN ALERT: Bin 1 is full and needs to be emptied. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
                 }
                 res.status(200).json({
                     success: true,
@@ -66,7 +66,7 @@ const updateservo = async (req: any, res: any) => {
 
             update(bin2Ref, { servo: servo }).then(() => {
                 if(servo=='off'){
-                    sendMessage("IOT ALERT: Bin 2 is full and needs to be emptied. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
+                    sendMessage("SMART BIN ALERT: Bin 2 is full and needs to be emptied. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
                 }
                 res.status(200).json({
                     success: true,
