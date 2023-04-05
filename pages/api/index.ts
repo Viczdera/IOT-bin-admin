@@ -10,7 +10,7 @@ import {
   inMemoryPersistence,
 } from 'firebase/auth';
 //TWILIO CLIENT
-const messageClient = require("twilio")(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+export const messageClient = require("twilio")(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 // Firebase configuration - this should not be public.
 // Please use your own config if you intend to use this code.
 var firebaseConfig = {

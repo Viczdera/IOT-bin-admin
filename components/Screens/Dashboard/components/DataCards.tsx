@@ -7,6 +7,8 @@ import {
   SkeletonCircle,
   Skeleton,
   Switch,
+  Button,
+  Spinner,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { BsCashCoin } from "react-icons/bs";
@@ -15,19 +17,65 @@ import { MdSell } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { DashboardOverview } from "../../../../data/MockData";
 import { formatter } from "../../../../helpers/HelperFunctions";
+import { usePostRequest } from "../../../../hooks/allQueries";
+import { Popover } from "antd";
 
 const CardCont = (props: {
   loading: boolean;
-  key: number;
+  num: any;
   value: string;
   title: string;
   icon: any;
   mt?: any;
-  servo:string
+  servo: string;
 }) => {
+  //post request
+  const { createPost, isLoading, data } = usePostRequest(
+    true,
+    "/api/bin/update","sensor-data"
+  );
+  useEffect(() => {
+    let status = data?.status;
+    let d = data?.data;
+
+    if (status == 200) {
+      console.log(d);
+    } else {
+      //console.log(data);
+    }
+  }, [isLoading]);
+  const updateBinData = ({ key, servo }: any) => {
+
+    return (
+      <>
+        <Flex>
+          <Button
+            w="100%"
+            background="black.100"
+            _active={{ background: "var(--black200)" }}
+            _focus={{ background: "var(--black200)" }}
+            _hover={{ background: "black" }}
+            color="white"
+            size="sm"
+            isLoading={isLoading}
+            onClick={() => {
+              let data={
+                bin:key,
+                servo:servo
+              }
+              console.log(data)
+              createPost(data);
+            }}
+          >
+            Update
+          </Button>
+        </Flex>
+      </>
+    );
+  };
   return (
     <Flex
-      key={props.key}
+      key={props.num}
       style={styles.card}
       minW={{ base: "45%", sm: "200px" }}
       mt={props.mt}
@@ -79,13 +127,29 @@ const CardCont = (props: {
           </Box>
         </Flex>
         <Box ml="5px">
-          <Switch isChecked={props.servo=="on"} disabled={props.loading} />
+          <Popover
+          key={props.num}
+            content={updateBinData({
+              key: props.num,
+              servo: props.servo == "on" ? "off" : "on",
+            })}
+            placement="bottomLeft"
+            title={"Update bin"}
+            trigger="click"
+          >
+            <button>
+              <Switch
+                isChecked={props.servo == "on"}
+                disabled={props.loading}
+              />
+            </button>
+          </Popover>
         </Box>
       </Flex>
     </Flex>
   );
 };
-function DataCards(props: { loading: boolean; sensorData: any }) {
+function DataCards(props: { loading: boolean;fetchin:boolean; sensorData: any }) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
@@ -96,12 +160,14 @@ function DataCards(props: { loading: boolean; sensorData: any }) {
 
   const overviewData = [
     {
+      no: 1,
       title: "Bin One",
       icon: RiDeleteBin6Line,
       value: `${props.sensorData?.bin1?.level} cm`,
       servo: props.sensorData?.bin1?.servo,
     },
     {
+      no: 2,
       title: "Bin Two",
       icon: RiDeleteBin6Line,
       value: `${props.sensorData?.bin2?.level} cm `,
@@ -109,24 +175,28 @@ function DataCards(props: { loading: boolean; sensorData: any }) {
     },
   ];
   return (
+    <Box>
+      {props.fetchin&& <Spinner  size="sm"/>}
+
     <Flex
       p={0}
       justifyContent="space-between"
       flexWrap={{ base: "wrap", lg: "nowrap" }}
     >
       {overviewData.map((m, i) => (
-        <>
+        
           <CardCont
             loading={loading}
-            key={i}
+            num={m.no}
             title={m.title}
             value={m.value}
             icon={m.icon}
             servo={m.servo}
           />
-        </>
+        
       ))}
     </Flex>
+    </Box>
   );
 }
 
