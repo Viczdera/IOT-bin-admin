@@ -9,7 +9,8 @@ import {
   connectAuthEmulator,
   inMemoryPersistence,
 } from 'firebase/auth';
-
+//TWILIO CLIENT
+const messageClient = require("twilio")(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 // Firebase configuration - this should not be public.
 // Please use your own config if you intend to use this code.
 var firebaseConfig = {
@@ -22,16 +23,20 @@ var firebaseConfig = {
   appId: process.env.APPID
 }
 
+
 // Initialize Firebase
 initializeApp(firebaseConfig);
 // firebase.initializeApp(firebaseConfig)
-const db = getDatabase()
+export const fireDB = getDatabase()
 // // Get a reference to the database service
-let sensor_dataRef = ref(db, "sensor_data/bins")
-onValue(sensor_dataRef, (snapshot) => {
+let sensor_dataRef = ref(fireDB, "sensor_data/bins")
+
+onValue(sensor_dataRef, (snapshot: any) => {
   const data = snapshot.val();
-  console.log(data)
-});
+  //console.log(data)
+  return data
+})
+
 
 
 
@@ -40,7 +45,6 @@ type Data = {
   message: string,
   data: JSON
 }
-
 
 export default function handler(
   req: NextApiRequest,
@@ -51,6 +55,26 @@ export default function handler(
     if (snapshot.exists()) {
       console.log(snapshot.val());
       res.status(200).json({ message: 'success', data: snapshot.val() })
+      messageClient.messages
+        .create({
+          body: 'Hello from iot-bin-node',
+          from: "+15855802207",
+          to: "+2348168321836"
+        })
+        .then((message: any) => {
+          console.log(message)
+        }).catch((error: any) => {
+          // You can implement your fallback code here
+          console.log(error);
+        });
+      // messageClient.calls
+      //   .create({
+      //     url: 'http://demo.twilio.com/docs/voice.xml',
+      //     from: "+15855802207",
+      //     to: "+2348168321836"
+      //   })
+      //   .then((call:any) => console.log(call.sid));
+
     } else {
       console.log("No data available");
     }

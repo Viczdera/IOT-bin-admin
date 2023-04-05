@@ -136,12 +136,7 @@ const [userDetails,setUserDetails]=useState({
                 href="/"
                 exact
               />
-              <SideNavItem
-                title="Products"
-                icon={VscTag}
-                sideNavSize={sideNavSize}
-                href="/products"
-              />
+            
               {/* <SideNavItem
                 title="Orders"
                 icon={BsDisplayFill}
@@ -150,30 +145,8 @@ const [userDetails,setUserDetails]=useState({
               /> */}
             </Menu>
           </Flex>
-          <Box w="100%" mb={4}>
-            <Flex width="100%" py="20px">
-              <Button
-                margin="0 auto"
-                backgroundColor="white.100"
-                boxShadow={boxShadow}
-                onClick={() => {
-                  Router.push("/products/new");
-                }}
-              >
-                {sideNavSize == "small" ? (
-                  <MdBookmarkAdd size="20px" />
-                ) : (
-                  <>
-                    {" "}
-                    <Flex alignItems="center">
-                      <MdBookmarkAdd size="20px" />
-                      Add Item
-                    </Flex>
-                  </>
-                )}
-              </Button>
-            </Flex>
-            <Divider />
+          <Box mt='40px' w="100%" mb={4}>
+            
             <Box width="100%" py="20px">
               <Flex
                 flexDir="row"
@@ -197,7 +170,7 @@ const [userDetails,setUserDetails]=useState({
                 )}
               </Flex>
               <Menu >
-                <MenuButton p={0}>
+                <MenuButton mt='20px' p={0}>
                   <Flex mt="10px" pl="7" alignItems="center">
                     <Icon
                       mr="5px"
