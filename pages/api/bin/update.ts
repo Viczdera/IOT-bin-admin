@@ -2,10 +2,10 @@ import connectDB from "../../../utils/connectDB";
 import AdminUser from "../../../models/User"
 import bcrypt from 'bcrypt'
 import { ref, set, update } from "firebase/database";
-import { fireDB, messageClient } from "..";
+import { app, fireDB, messageClient } from "..";
 
 connectDB()
-
+app;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: any, res: any) => {

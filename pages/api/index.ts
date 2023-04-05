@@ -25,7 +25,7 @@ var firebaseConfig = {
 
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+export const app=initializeApp(firebaseConfig);
 // firebase.initializeApp(firebaseConfig)
 export const fireDB = getDatabase()
 // // Get a reference to the database service
