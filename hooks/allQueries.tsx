@@ -29,7 +29,6 @@ export const useGetRequest = (endpoint: string,queryName:string, access_token?: 
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
     Accept: "application/json",
-    Authorization: `Bearer ${access_token}`,
   };
 
   const fetchData = async () => {

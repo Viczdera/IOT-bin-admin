@@ -13,16 +13,19 @@ const boxShadow2 = "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px";
 function Dashboard() {
   // destructuring state
   const { state, dispatch } = useContext(DataValueContext);
-  const [sensorData, setSensorData] = useState<any>({});
+  const [sensorData, setSensorData] = useState<any>({
+    bin1: { level: "", servo: "" },
+    bin2: { level: "", servo: "" },
+  });
   //post request
-  const { isLoading, data } = useGetRequest("/api/bin", "sensor-data");
+  const { isLoading,isFetching, data } = useGetRequest("/api/bin", "sensor-data");
   useEffect(() => {
     let status = data?.status;
     let d = data?.data;
     if (d?.success) {
       setSensorData(d?.data);
     }
-  }, [isLoading]);
+  }, [isLoading,isFetching]);
 
   const Card = (props: {
     children: any;
@@ -47,7 +50,7 @@ function Dashboard() {
   return (
     <Box w="100%">
       <Box style={styles.boxCont}>
-        <DataCards loading={isLoading} sensorData={sensorData}   />
+        <DataCards loading={isLoading} isFetching={isFetching} sensorData={sensorData} />
       </Box>
       <Flex flexGrow={1}>
         <Flex w="100%">

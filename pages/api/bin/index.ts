@@ -1,8 +1,8 @@
-import connectDB from "../../utils/connectDB";
-import AdminUser from "../../models/User"
+import connectDB from "../../../utils/connectDB";
+import AdminUser from "../../../models/User"
 import bcrypt from 'bcrypt'
-import { fireDB} from ".";
 import { onValue, ref } from "firebase/database";
+import { fireDB } from "..";
 
 connectDB()
 
