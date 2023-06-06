@@ -11,6 +11,7 @@ import Router from "next/router";
 import React, { useEffect } from "react";
 import { CiShop } from "react-icons/ci";
 import LoginForm from "./formLogin";
+import { BsTrash } from "react-icons/bs";
 function Login() {
 return (
     <Box
@@ -19,7 +20,7 @@ return (
       style={styles.boxCont}
     >
       <Box>
-        <Icon as={CiShop} color='blue.200'  style={styles.icon} />
+        <Icon as={BsTrash} color='blue.200'  style={styles.icon} />
         <Text fontWeight="bold" fontSize="xl" textAlign="center" my="10px">
           Log In
         </Text>

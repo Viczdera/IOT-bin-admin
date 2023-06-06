@@ -19,8 +19,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       <DataValueProvider>
         <ChakraProvider theme={appTheme}>
           <Head>
-            <title>Shop Admin Demo</title>
-            <meta name="description" content="Shop admin demo application" />
+            <title>IOT Bin Admin</title>
+            <meta name="description" content="IOT Bin Admin application" />
             <link rel="icon" href="/shopLogo2.gif" />
           </Head>
 

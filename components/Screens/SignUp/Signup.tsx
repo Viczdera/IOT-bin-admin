@@ -12,6 +12,7 @@ import React from "react";
 import FormHandler from "./FormHandler";
 import Stepper from "./Stepper";
 import { CiShop } from "react-icons/ci";
+import { BsTrash } from "react-icons/bs";
 function SignUp() {
   const boxShadow =
     " rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px";
@@ -30,7 +31,7 @@ function SignUp() {
   return (
     <Box w="100%" >
       <Box mb="30px">
-        <Icon as={CiShop} style={styles.icon} />
+        <Icon as={BsTrash} style={styles.icon} />
         <Text fontWeight="bold" fontSize="xl" textAlign="center" my="10px">
           SignUp
         </Text>
