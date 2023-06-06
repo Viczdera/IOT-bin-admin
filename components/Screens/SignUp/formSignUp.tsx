@@ -65,11 +65,11 @@ export const ShopInfoForm: React.FC<ShopInfoProps> = ({
       }) => (
         <Form>
           <Box position="relative">
-            <Alert status="info" mb="5px" fontSize="12px">
+            {/* <Alert status="info" mb="5px" fontSize="12px">
               <AlertIcon color='blue.200' />
               Some Message for those signing up !
-            </Alert>
-            <span style={styles.span}>Manage your shop account</span>
+            </Alert> */}
+            <span style={styles.span}>Manage your account</span>
             <Box mt="15px">
               <FormControl isInvalid={props.errors.user_name}>
                 <FormLabel htmlFor="user_name" style={styles.label}>

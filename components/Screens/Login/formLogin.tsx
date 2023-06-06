@@ -63,7 +63,6 @@ function LoginForm(props: any) {
           touched: any;
         }) => (
           <Form>
-            <span style={styles.span}>Manage your shop</span>
 
             <Box mt="15px">
               <FormControl>
