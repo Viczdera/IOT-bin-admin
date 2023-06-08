@@ -47,9 +47,9 @@ const bindata = async (req: any, res: any) => {
             
             Object.values(data).map((m: any | {}, i: string | number) => {
                 let level = m?.level
-                if(level>50){
-                    m.level=80
-                }
+                // if(level>50){
+                //     m.level=80
+                // }
                 if (level < 20) {
                     if (i == 0) {
                         sendMessage("SMART BIN ALERT: Bin 1 is full and needs to be emptied. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
