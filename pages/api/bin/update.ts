@@ -21,12 +21,11 @@ const sendMessage = (message:string) => {
         .create({
             body: message,
             from: "+15855802207",
-            to: "+2348168321836"
+            to: "+2348166371836"
         })
         .then((message: any) => {
             console.log(message)
         }).catch((error: any) => {
-            // You can implement your fallback code here
             console.log(error);
         });
     // messageClient.calls
