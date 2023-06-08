@@ -81,7 +81,7 @@ export const useGetRequest = (endpoint: string,queryName:string, access_token?: 
         isClosable: true,
       });
     },
-   // refetchInterval:3000,
+    refetchInterval:3000,
   });
   return { isLoading, isSuccess,isFetching, data };
 };
