@@ -21,7 +21,7 @@ const sendMessage = (message:string) => {
         .create({
             body: message,
             from: "+15855802207",
-            to: "+2348166371836"
+            to: "+2348168321826"
         })
         .then((message: any) => {
             console.log(message)
@@ -48,7 +48,9 @@ const updateservo = async (req: any, res: any) => {
             update(bin1Ref, { servo: servo }).then(() => {
 
                 if(servo=='off'){
-                    sendMessage("SMART BIN ALERT: Bin 1 is full and needs to be emptied. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
+                    sendMessage("SMART BIN ALERT:  Bin 1 has been deactivated. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
+                }else if(servo=='on'){
+                    sendMessage("SMART BIN ALERT:  Bin 1 has been activated. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
                 }
                 res.status(200).json({
                     success: true,
@@ -65,7 +67,9 @@ const updateservo = async (req: any, res: any) => {
 
             update(bin2Ref, { servo: servo }).then(() => {
                 if(servo=='off'){
-                    sendMessage("SMART BIN ALERT: Bin 2 is full and needs to be emptied. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
+                    sendMessage("SMART BIN ALERT: Bin 2 has been deactivated. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
+                }else if(servo=='on'){
+                    sendMessage("SMART BIN ALERT:  Bin 2 has been activated. Please take action as soon as possible to prevent any overflow or other issues. Thank you.")
                 }
                 res.status(200).json({
                     success: true,
