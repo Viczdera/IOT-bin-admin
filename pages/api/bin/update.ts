@@ -21,7 +21,7 @@ const sendMessage = (message:string) => {
         .create({
             body: message,
             from: "+15855802207",
-            to: "+2348168321826"
+            to: "+2348168321836"
         })
         .then((message: any) => {
             console.log(message)
